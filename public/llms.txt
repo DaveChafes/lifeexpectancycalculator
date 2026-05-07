@@ -1,0 +1,9 @@
+# Life Expectancy Calculator
+> See how much time you have — and make it count.
+
+This tool calculates estimated lifespan based on U.S. Social Security Administration and CDC actuarial data. Users enter their date of birth and biological sex to receive a baseline estimate, then adjust lifestyle factors (smoking, BMI, exercise, sleep, stress, diet) to see how choices affect their estimated lifespan. Results are visualized as an animated number, a life bar, a life-in-weeks grid, and demographic comparison charts.
+
+All calculations are performed client-side. No personal data is collected.
+
+Data sources: SSA 2022 Period Life Table, CDC National Center for Health Statistics.
+

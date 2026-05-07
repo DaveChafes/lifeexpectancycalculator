@@ -11,6 +11,8 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        lifegreen: "#22c55e",
+        lifered: "#ef4444",
       },
     },
   },
