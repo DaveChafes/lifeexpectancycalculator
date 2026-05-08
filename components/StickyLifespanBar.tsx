@@ -67,23 +67,23 @@ export default function StickyLifespanBar({
         <div className="w-full max-w-[720px] mx-auto px-6 min-h-[72px] flex items-center">
           <div className="flex items-center gap-6 w-full">
             <div className="flex flex-col justify-center">
-              <div className="text-3xl font-bold text-amber-700 leading-none">
+              <div className="text-3xl font-bold text-gray-900 leading-none">
                 {Math.round(estimatedAge)}
               </div>
-              <div className="text-xs text-stone-500 mt-1">Est. Lifespan</div>
+              <div className="text-xs text-gray-500 mt-1">Est. Lifespan</div>
             </div>
 
             <div className="flex-1 flex flex-col justify-center">
-              <div className="text-sm text-stone-600">
+              <div className="text-sm text-gray-700">
                 Estimated to live until{' '}
-                <span className="font-bold text-amber-700">{estimatedDeathYear}</span>
+                <span className="font-bold text-gray-900">{estimatedDeathYear}</span>
               </div>
-              <div className="text-xs text-stone-500 mt-1">
+              <div className="text-xs text-gray-500 mt-1">
                 {weeksRemaining.toLocaleString()} weeks remaining — make them count.
               </div>
             </div>
 
-            <div className="hidden lg:block text-xs text-stone-500 whitespace-nowrap">
+            <div className="hidden lg:block text-xs text-gray-500 whitespace-nowrap">
               {countdown.years} yrs, {countdown.months} months, {countdown.days} days remaining
             </div>
           </div>
@@ -99,8 +99,8 @@ export default function StickyLifespanBar({
         aria-hidden={!isVisible}
       >
         <div className="flex flex-col items-center text-center leading-tight">
-          <div className="text-lg font-bold text-amber-700">{Math.round(estimatedAge)}</div>
-          <div className="text-xs text-stone-500">Until {estimatedDeathYear}</div>
+          <div className="text-lg font-bold text-gray-900">{Math.round(estimatedAge)}</div>
+          <div className="text-xs text-gray-500">Until {estimatedDeathYear}</div>
         </div>
       </button>
     </>

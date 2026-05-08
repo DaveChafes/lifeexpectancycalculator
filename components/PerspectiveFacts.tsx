@@ -192,7 +192,7 @@ export default function PerspectiveFacts({
             paddingBottom: '2px',
           }}
         >
-          → See all 33 perspective facts
+          → See all 32 perspective facts
         </Link>
       </div>
     </section>
