@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Home } from 'lucide-react';
+import { useState } from 'react';
 
 export default function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [homeHover, setHomeHover] = useState(false);
 
   const navLinkStyle = (href: string) => ({
     fontSize: '13px',
@@ -67,9 +69,25 @@ export default function NavBar() {
           gap: '24px',
         }}
       >
-        <a href="/" style={navLinkStyle('/')}>
-          <Home size={16} color={pathname === '/' ? '#fbbf24' : '#d1d5db'} aria-hidden />
-          <span style={{ color: pathname === '/' ? '#fbbf24' : '#d1d5db' }}>Home</span>
+        <a
+          href="/"
+          onMouseEnter={() => setHomeHover(true)}
+          onMouseLeave={() => setHomeHover(false)}
+          onClick={(e) => {
+            e.preventDefault();
+            if (typeof window !== 'undefined') {
+              sessionStorage.removeItem('lifeCalcResult');
+            }
+            window.location.href = '/';
+          }}
+          style={{
+            ...navLinkStyle('/'),
+            fontWeight: 400,
+            color: homeHover ? '#fcd34d' : '#fbbf24',
+          }}
+        >
+          <Home size={16} color={homeHover ? '#fcd34d' : '#fbbf24'} aria-hidden />
+          <span style={{ color: homeHover ? '#fcd34d' : '#fbbf24' }}>Home</span>
         </a>
 
         {[
