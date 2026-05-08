@@ -1,7 +1,16 @@
 export const metadata = {
-  title: 'Methodology & Data Sources',
+  title: 'Methodology',
   description:
-    'How the Life Expectancy Calculator works — SSA actuarial data, lifestyle modifiers, and important limitations.',
+    'How the Life Expectancy Calculator works — SSA 2022 Period Life Table, CDC actuarial data, and evidence-based lifestyle modifiers explained in plain English.',
+  openGraph: {
+    title: 'Methodology | Life Expectancy Calculator',
+    description:
+      'How the Life Expectancy Calculator works — SSA 2022 Period Life Table, CDC data, and lifestyle modifiers explained.',
+    url: 'https://whenwillidiecalculator.com/methodology',
+  },
+  alternates: {
+    canonical: 'https://whenwillidiecalculator.com/methodology',
+  },
 };
 
 import AdUnit from '@/components/AdUnit';
@@ -16,6 +25,24 @@ export default function MethodologyPage() {
         padding: '60px 24px',
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'Methodology for the Life Expectancy Calculator',
+            description:
+              'How the Life Expectancy Calculator works — SSA 2022 Period Life Table, CDC actuarial data, and evidence-based lifestyle modifiers explained.',
+            url: 'https://whenwillidiecalculator.com/methodology',
+            publisher: {
+              '@type': 'Organization',
+              name: 'Life Expectancy Calculator',
+              url: 'https://whenwillidiecalculator.com',
+            },
+          }),
+        }}
+      />
       <h1
         style={{
           fontFamily: 'var(--font-lora), Georgia, serif',

@@ -1,7 +1,16 @@
 export const metadata = {
   title: 'Privacy Policy',
   description:
-    'Privacy policy for the Life Expectancy Calculator. No personal data is collected or stored.',
+    'Privacy policy for the Life Expectancy Calculator. All calculations happen in your browser — no personal data is ever collected or stored.',
+  openGraph: {
+    title: 'Privacy Policy | Life Expectancy Calculator',
+    description:
+      'All calculations happen in your browser — no personal data is ever collected or stored.',
+    url: 'https://whenwillidiecalculator.com/privacy',
+  },
+  alternates: {
+    canonical: 'https://whenwillidiecalculator.com/privacy',
+  },
 };
 
 export default function PrivacyPage() {

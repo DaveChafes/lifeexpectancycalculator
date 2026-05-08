@@ -1,6 +1,16 @@
 export const metadata = {
   title: 'About',
-  description: 'Why I built this life expectancy calculator and what data it uses.',
+  description:
+    'Why I built the Life Expectancy Calculator — a free perspective tool based on SSA and CDC actuarial data that shows your life in weeks, not just years.',
+  openGraph: {
+    title: 'About | Life Expectancy Calculator',
+    description:
+      'Why I built the Life Expectancy Calculator — a free perspective tool based on SSA and CDC actuarial data.',
+    url: 'https://whenwillidiecalculator.com/about',
+  },
+  alternates: {
+    canonical: 'https://whenwillidiecalculator.com/about',
+  },
 };
 
 import AdUnit from '@/components/AdUnit';
@@ -15,6 +25,24 @@ export default function AboutPage() {
         padding: '60px 24px',
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'About the Life Expectancy Calculator',
+            description:
+              'Why the Life Expectancy Calculator was built and how it uses SSA and CDC actuarial data to create genuine perspective about time.',
+            url: 'https://whenwillidiecalculator.com/about',
+            publisher: {
+              '@type': 'Organization',
+              name: 'Life Expectancy Calculator',
+              url: 'https://whenwillidiecalculator.com',
+            },
+          }),
+        }}
+      />
       <h1
         style={{
           fontFamily: 'var(--font-lora), Georgia, serif',

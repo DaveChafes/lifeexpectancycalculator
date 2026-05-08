@@ -13,37 +13,27 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Life Expectancy Calculator — How Much Time Do You Have?',
+    default: 'Life Expectancy Calculator — See How Much Time You Have',
     template: '%s | Life Expectancy Calculator',
   },
   description:
-    'See how much time you have — and make it count. Based on SSA & CDC actuarial data. Interactive sliders show how smoking, BMI, exercise & more affect your estimated lifespan.',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
-      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
-    ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/favicon.ico',
-  },
+    'Free life expectancy calculator based on SSA & CDC actuarial data. Enter your age and lifestyle habits to see your estimated lifespan in years, weeks, and a life grid. Takes 60 seconds.',
   keywords: [
     'life expectancy calculator',
     'how long will I live',
     'lifespan calculator',
     'life expectancy estimator',
     'life in weeks',
-    'when will I die calculator',
     'longevity calculator',
+    'when will I die calculator',
+    'how many weeks do I have left',
+    'SSA life expectancy',
+    'CDC life expectancy',
   ],
-  authors: [{ name: 'Life Expectancy Calculator' }],
-  creator: 'Life Expectancy Calculator',
-  metadataBase: new URL('https://whenwillidiecalculator.com'),
   openGraph: {
-    title: 'Life Expectancy Calculator — How Much Time Do You Have?',
+    title: 'Life Expectancy Calculator — See How Much Time You Have',
     description:
-      'See how much time you have — and make it count. Based on real SSA & CDC actuarial data.',
+      'Free life expectancy calculator based on SSA & CDC actuarial data. See your estimated lifespan in years, weeks, and a life grid.',
     type: 'website',
     locale: 'en_US',
     url: 'https://whenwillidiecalculator.com',
@@ -51,8 +41,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Life Expectancy Calculator — How Much Time Do You Have?',
-    description: 'See how much time you have — and make it count.',
+    title: 'Life Expectancy Calculator — See How Much Time You Have',
+    description:
+      'Free life expectancy calculator based on SSA & CDC actuarial data. See your estimated lifespan in years, weeks, and a life grid.',
   },
   robots: {
     index: true,
@@ -64,9 +55,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://whenwillidiecalculator.com',
-  },
-  verification: {
-    google: 'vUrNWVHpNTVsXfVH5lxQPy5nUfpYkdCxV-HaPF83yQI',
   },
 };
 

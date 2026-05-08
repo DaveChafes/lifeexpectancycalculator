@@ -32,6 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
+    {
+      url: 'https://whenwillidiecalculator.com/life-expectancy-by-state',
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.8,
+    },
   ];
 }
 

@@ -51,7 +51,7 @@ function getStructuredData() {
           name: 'How accurate is this life expectancy calculator?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: "This calculator provides statistical estimates based on the SSA 2022 Period Life Table and CDC actuarial data. Results are population averages and do not predict any individual's lifespan.",
+            text: "This calculator provides statistical estimates based on the U.S. Social Security Administration 2022 Period Life Table and CDC actuarial data — the same sources used by financial planners and insurers. Results are population averages and do not predict any individual's lifespan. Individual outcomes depend on genetics, healthcare access, accidents, and many factors no model can fully capture.",
           },
         },
         {
@@ -59,7 +59,7 @@ function getStructuredData() {
           name: 'What data does this calculator use?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The calculator uses the U.S. Social Security Administration 2022 Period Life Table and CDC National Center for Health Statistics data — the same sources used by financial planners and insurers.',
+            text: 'The calculator uses the U.S. Social Security Administration 2022 Period Life Table and CDC National Center for Health Statistics data. Both are public domain federal datasets freely available at ssa.gov and cdc.gov. Lifestyle modifier adjustments are drawn from peer-reviewed longevity research including studies published by the American Heart Association, CDC, and academic journals.',
           },
         },
         {
@@ -67,7 +67,7 @@ function getStructuredData() {
           name: 'Does this calculator store my personal data?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'No. All calculations happen locally in your browser. Your birth date, sex, and lifestyle inputs are never sent to a server or stored anywhere.',
+            text: 'No. All calculations happen locally in your browser. Your date of birth, sex, and lifestyle inputs are never sent to a server or stored anywhere outside your device. The only data stored is a temporary session cache so your results persist if you navigate to another page — this is cleared when you start a new calculation.',
           },
         },
         {
@@ -75,7 +75,7 @@ function getStructuredData() {
           name: 'What is the average life expectancy in the US?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'According to CDC data, the average American man lives to approximately 74.8 years and the average American woman to approximately 80.2 years.',
+            text: 'According to CDC data, the average American man lives to approximately 74.8 years and the average American woman to approximately 80.2 years. These are statistical averages — individual life expectancy varies significantly based on lifestyle, genetics, socioeconomic factors, and healthcare access.',
           },
         },
         {
@@ -83,7 +83,7 @@ function getStructuredData() {
           name: 'Why does seeing life in weeks feel different than seeing it in years?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Years feel abstract. Weeks feel countable and finite. When you see your remaining weeks as individual squares on a grid, the finiteness of time becomes vivid in a way that tends to shift priorities.',
+            text: "Years feel abstract. Weeks feel countable and finite. When you see your remaining weeks as individual squares on a grid, the finiteness of time becomes vivid in a way that tends to shift priorities. This concept was popularized by Tim Urban's 'Your Life in Weeks' article, which reached over 10 million readers. The goal of this visualization is perspective and motivation — not anxiety.",
           },
         },
         {
@@ -91,7 +91,39 @@ function getStructuredData() {
           name: 'What is the single biggest thing I can do to add years to my life?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'If you smoke, quitting is consistently the highest-impact change available — adding up to 10 years in population studies. Beyond that, regular exercise, quality sleep, and a healthy BMI have the largest measurable effects.',
+            text: 'If you smoke, quitting is consistently the highest-impact single change available — population studies show daily smokers lose an average of 10 years compared to non-smokers. Beyond that, regular exercise, quality sleep (7-9 hours), maintaining a healthy BMI, and managing chronic stress have the largest measurable effects on longevity.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does smoking affect life expectancy?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Daily smoking is associated with losing approximately 10 years of life expectancy on average, according to CDC data. The good news: quitting smoking cuts your risk of heart disease in half within just 1 year, and within 15 years your risk approaches that of someone who never smoked.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does BMI affect life expectancy?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Both underweight (BMI below 18.5) and obesity (BMI above 30) are associated with elevated mortality risk in large population studies. A healthy BMI range of 18.5 to 24.9 is associated with the lowest mortality risk. BMI is an imperfect measure — muscle mass, metabolic health, and other factors matter — but it remains one of the most widely studied longevity markers.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is this calculator free to use?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes, completely free. No account required, no email gate, no paywall. The calculator is built on public domain government data and is intended as a free educational perspective tool for anyone who wants to think more clearly about their time.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How is life expectancy calculated?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "This calculator reads your remaining life expectancy directly from the SSA 2022 Period Life Table based on your current age and sex. The table provides an 'ex' value — expected additional years of life — for each age from 0 to 110. Your estimated lifespan age is your current age plus that expected additional years value. Lifestyle modifiers then apply evidence-based year adjustments on top of that baseline estimate.",
           },
         },
       ],
