@@ -27,7 +27,6 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number>(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const [statsVisible, setStatsVisible] = useState(false);
   const [scale, setScale] = useState(1);
   const [animatedStats, setAnimatedStats] = useState({
     monthsLivedDisplay: 0,
@@ -36,6 +35,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     weeksRemainingDisplay: 0,
     yearsRemainingDisplay: 0,
   });
+  const [statsVisible, setStatsVisible] = useState(false);
 
   const COLS = 24;
   const RADIUS = 8;
@@ -152,44 +152,6 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   }, [canvasWidth, canvasHeight]);
 
   useEffect(() => {
-    if (!statsVisible) return;
-
-    const monthsRemaining = totalMonths - monthsLived;
-    const yearsRemaining = Math.round(monthsRemaining / 12);
-
-    const targets = {
-      monthsLivedDisplay: monthsLived,
-      weeksLivedDisplay: weeksLived,
-      monthsRemainingDisplay: monthsRemaining,
-      weeksRemainingDisplay: weeksRemaining,
-      yearsRemainingDisplay: yearsRemaining,
-    };
-
-    const DURATION = 2000;
-    const startTime = performance.now();
-
-    function animateNumbers(now: number) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / DURATION, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-
-      setAnimatedStats({
-        monthsLivedDisplay: Math.round(eased * targets.monthsLivedDisplay),
-        weeksLivedDisplay: Math.round(eased * targets.weeksLivedDisplay),
-        monthsRemainingDisplay: Math.round(eased * targets.monthsRemainingDisplay),
-        weeksRemainingDisplay: Math.round(eased * targets.weeksRemainingDisplay),
-        yearsRemainingDisplay: Math.round(eased * targets.yearsRemainingDisplay),
-      });
-
-      if (progress < 1) {
-        requestAnimationFrame(animateNumbers);
-      }
-    }
-
-    requestAnimationFrame(animateNumbers);
-  }, [statsVisible, monthsLived, totalMonths, weeksLived, weeksRemaining]);
-
-  useEffect(() => {
     if (!hasStarted) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -268,7 +230,39 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         if (p < 1) {
           animFrameRef.current = requestAnimationFrame(dissolveFrame);
         } else {
+          const monthsRemaining = totalMonths - monthsLived;
+          const yearsRemaining = Math.round(monthsRemaining / 12);
+          const DURATION = 2500;
+          const statsStart = performance.now();
+
+          setAnimatedStats({
+            monthsLivedDisplay: 0,
+            weeksLivedDisplay: 0,
+            monthsRemainingDisplay: 0,
+            weeksRemainingDisplay: 0,
+            yearsRemainingDisplay: 0,
+          });
           setStatsVisible(true);
+
+          const animateNumbers = (now2: number) => {
+            const elapsed2 = now2 - statsStart;
+            const progress2 = Math.min(elapsed2 / DURATION, 1);
+            const eased2 = 1 - Math.pow(1 - progress2, 3);
+
+            setAnimatedStats({
+              monthsLivedDisplay: Math.round(eased2 * monthsLived),
+              weeksLivedDisplay: Math.round(eased2 * weeksLived),
+              monthsRemainingDisplay: Math.round(eased2 * monthsRemaining),
+              weeksRemainingDisplay: Math.round(eased2 * weeksRemaining),
+              yearsRemainingDisplay: Math.round(eased2 * yearsRemaining),
+            });
+
+            if (progress2 < 1) {
+              requestAnimationFrame(animateNumbers);
+            }
+          };
+
+          requestAnimationFrame(animateNumbers);
         }
       }
 
@@ -282,6 +276,8 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     ROWS,
     RADIUS,
     monthsLived,
+    weeksLived,
+    weeksRemaining,
     totalMonths,
     hasStarted,
     drawCurrentCircle,
