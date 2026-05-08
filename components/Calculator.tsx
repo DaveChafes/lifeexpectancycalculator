@@ -426,9 +426,12 @@ export default function Calculator({ onSubmit }: CalculatorProps) {
           backgroundColor: '#f7f2e8',
           minHeight: 'calc(100vh - 56px)',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
-          padding: '24px 24px 48px 24px',
+          paddingTop: '80px',
+          paddingBottom: '48px',
+          paddingLeft: '24px',
+          paddingRight: '24px',
         }}
       >
         <div className="calculator-form-enter" style={innerColumnStyle}>
