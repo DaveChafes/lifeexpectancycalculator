@@ -279,10 +279,6 @@ export default function Home() {
             </section>
 
           <section>
-            <AdUnit slotId="slot-1" format="horizontal" />
-          </section>
-
-          <section>
             <Sliders
               baseDeathAge={baseResult.estimatedDeathAge}
               onModifiersChange={handleModifiersChange}
@@ -295,10 +291,6 @@ export default function Home() {
               percentileVsPeers={percentile}
               sex={sex}
             />
-          </section>
-
-          <section>
-            <AdUnit slotId="slot-2" format="rectangle" />
           </section>
 
           <section>
@@ -317,6 +309,10 @@ export default function Home() {
               currentAge={baseResult.currentAge}
               weeksRemaining={baseResult.weeksRemaining}
             />
+          </section>
+
+          <section>
+            <AdUnit slotId="slot-after-share" format="rectangle" />
           </section>
 
           <section
@@ -596,6 +592,10 @@ export default function Home() {
                 </details>
               </div>
             </div>
+
+            <section>
+              <AdUnit slotId="slot-content" format="horizontal" />
+            </section>
 
             <div>
               <h2 style={H2_STYLE}>Data Sources</h2>
