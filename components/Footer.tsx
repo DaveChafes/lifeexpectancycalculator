@@ -135,6 +135,12 @@ export default function Footer() {
           <Link href="/life-expectancy-with-heart-disease" style={LEARN_MORE_LINK_STYLE}>
             Life Expectancy with Heart Disease
           </Link>
+          <Link href="/smoking-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            Smoking and Life Expectancy
+          </Link>
+          <Link href="/life-expectancy-with-diabetes" style={LEARN_MORE_LINK_STYLE}>
+            Life Expectancy with Diabetes
+          </Link>
           <Link href="/how-to-live-longer" style={LEARN_MORE_LINK_STYLE}>
             How to Live Longer
           </Link>
