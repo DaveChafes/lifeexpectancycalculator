@@ -424,11 +424,11 @@ export default function Calculator({ onSubmit }: CalculatorProps) {
       <div
         style={{
           backgroundColor: '#f7f2e8',
-          minHeight: '100vh',
+          minHeight: 'calc(100vh - 56px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 'clamp(24px, 8vw, 40px) 24px',
+          padding: '24px 24px 48px 24px',
         }}
       >
         <div className="calculator-form-enter" style={innerColumnStyle}>
