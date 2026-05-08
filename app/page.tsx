@@ -213,7 +213,7 @@ export default function Home() {
         if (!e) return;
         setIsStickyVisible(!e.isIntersecting);
       },
-      { threshold: 0.1 }
+      { threshold: 0 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -350,15 +350,15 @@ export default function Home() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getStructuredData()) }}
         />
+        <StickyLifespanBar
+          estimatedAge={displayDeathAge}
+          baseAge={baseResult.estimatedDeathAge}
+          isVisible={isStickyVisible}
+          onPillClick={() => resultRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        />
         <main
           style={{ backgroundColor: '#f7f2e8', minHeight: '100vh', paddingTop: '0' }}
         >
-          <StickyLifespanBar
-            estimatedAge={displayDeathAge}
-            baseAge={baseResult.estimatedDeathAge}
-            isVisible={isStickyVisible}
-            onPillClick={() => resultRef.current?.scrollIntoView({ behavior: 'smooth' })}
-          />
           <div
             style={{
               maxWidth: '720px',
