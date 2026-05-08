@@ -63,6 +63,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://whenwillidiecalculator.com',
   },
+  verification: {
+    google: 'vUrNWVHpNTVsXfVH5lxQPy5nUfpYkdCxV-HaPF83yQI',
+  },
 };
 
 export const viewport: Viewport = {
