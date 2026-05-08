@@ -353,6 +353,8 @@ export default function Home() {
         <StickyLifespanBar
           estimatedAge={displayDeathAge}
           baseAge={baseResult.estimatedDeathAge}
+          estimatedDeathYear={baseResult.estimatedDeathYear}
+          weeksRemaining={baseResult.weeksRemaining}
           isVisible={isStickyVisible}
           onPillClick={() => resultRef.current?.scrollIntoView({ behavior: 'smooth' })}
         />
