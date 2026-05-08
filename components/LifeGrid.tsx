@@ -29,7 +29,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const [hasStarted, setHasStarted] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
 
-  const COLS = 12;
+  const COLS = 24;
   const RADIUS = 8;
   const GAP = 7;
   const CELL = RADIUS * 2 + GAP;
@@ -45,7 +45,6 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const weeksRemaining = Math.max(0, Math.round((estimatedDeathAge - monthsLived / 12) * 52));
 
   const COLOR_LIVED = '#c9a84c';
-  const COLOR_CURRENT = '#1a1612';
   const COLOR_REMAINING_STROKE = '#d4c9b0';
 
   const canvasWidth = COLS * CELL;
@@ -83,10 +82,16 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
       const { x, y } = getCenter(index);
       ctx.beginPath();
       ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR_CURRENT;
+      ctx.fillStyle = '#fffdf7';
       ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
+      ctx.strokeStyle = '#c9a84c';
+      ctx.lineWidth = 2;
+      ctx.stroke();
     },
-    [COLOR_CURRENT, RADIUS, getCenter]
+    [RADIUS, getCenter]
   );
 
   const drawRemainingCircle = useCallback(
@@ -170,38 +175,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
 
     function animateCurrentCircle(ctx3: CanvasRenderingContext2D) {
       drawCurrentCircle(ctx3, monthsLived);
-
-      const { x, y } = getCenter(monthsLived);
-      const RIPPLE_DURATION = 1200;
-      const startTime2 = performance.now();
-
-      function rippleFrame(now: number) {
-        const elapsed = now - startTime2;
-        const p = Math.min(elapsed / RIPPLE_DURATION, 1);
-
-        drawCurrentCircle(ctx3, monthsLived);
-
-        const maxRadius = RADIUS * 4;
-        const rippleRadius = RADIUS + p * (maxRadius - RADIUS);
-        const opacity = 1 - p;
-
-        ctx3.save();
-        ctx3.beginPath();
-        ctx3.arc(x, y, rippleRadius, 0, Math.PI * 2);
-        ctx3.strokeStyle = `rgba(26, 22, 18, ${opacity * 0.4})`;
-        ctx3.lineWidth = 2 * (1 - p);
-        ctx3.stroke();
-        ctx3.restore();
-
-        if (p < 1) {
-          animFrameRef.current = requestAnimationFrame(rippleFrame);
-        } else {
-          drawCurrentCircle(ctx3, monthsLived);
-          setTimeout(() => animateRemainingDissolve(ctx3), 800);
-        }
-      }
-
-      animFrameRef.current = requestAnimationFrame(rippleFrame);
+      setTimeout(() => animateRemainingDissolve(ctx3), 800);
     }
 
     function animateRemainingDissolve(ctx3: CanvasRenderingContext2D) {
