@@ -113,8 +113,8 @@ export default function Footer() {
       </nav>
 
       <div style={LEARN_MORE_WRAP_STYLE} aria-label="Learn more links">
-        <p style={LEARN_MORE_HEADING_STYLE} className="text-xs uppercase tracking-widest">
-          Learn More
+        <p style={LEARN_MORE_HEADING_STYLE}>
+          LEARN MORE
         </p>
         <div style={LEARN_MORE_LINKS_STYLE}>
           <Link href="/life-expectancy-by-state" style={LEARN_MORE_LINK_STYLE}>
@@ -122,15 +122,6 @@ export default function Footer() {
           </Link>
           <Link href="/life-expectancy-men-vs-women" style={LEARN_MORE_LINK_STYLE}>
             Life Expectancy: Men vs Women
-          </Link>
-          <Link href="/methodology" style={LEARN_MORE_LINK_STYLE}>
-            Methodology
-          </Link>
-          <Link href="/about" style={LEARN_MORE_LINK_STYLE}>
-            About
-          </Link>
-          <Link href="/privacy" style={LEARN_MORE_LINK_STYLE}>
-            Privacy Policy
           </Link>
         </div>
       </div>
