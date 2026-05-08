@@ -2,6 +2,7 @@
 
 import AdUnit from '@/components/AdUnit';
 import Calculator from '@/components/Calculator';
+import PerspectiveFacts from '@/components/PerspectiveFacts';
 import Result from '@/components/Result';
 import ShareCard from '@/components/ShareCard';
 import Sliders from '@/components/Sliders';
@@ -151,6 +152,17 @@ export default function Home() {
       setPercentile(
         getPercentileVsPeers(result.estimatedDeathAge, inputs.sex, result.currentAge)
       );
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(
+          'lifeCalcResult',
+          JSON.stringify({
+            years: result.yearsRemaining,
+            weeks: result.weeksRemaining,
+          })
+        );
+      }
+
       setTimeout(() => {
         setLoading(false);
         setStep('result');
@@ -297,6 +309,13 @@ export default function Home() {
             <LifeGrid
               birthDate={birthDate}
               estimatedDeathAge={adjustedDeathAge ?? baseResult.estimatedDeathAge}
+            />
+          </section>
+
+          <section>
+            <PerspectiveFacts
+              yearsRemaining={baseResult.yearsRemaining}
+              weeksRemaining={baseResult.weeksRemaining}
             />
           </section>
 
