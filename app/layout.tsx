@@ -3,6 +3,7 @@ import { Lora } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Footer from '@/components/Footer';
+import NavBar from '@/components/NavBar';
 
 const lora = Lora({
   subsets: ["latin"],
@@ -103,6 +104,9 @@ export default function RootLayout({
         className={`${lora.variable} antialiased`}
       >
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flexShrink: 0 }}>
+            <NavBar />
+          </div>
           <div style={{ flex: '1 0 auto' }}>{children}</div>
           <div style={{ flexShrink: 0 }}>
             <Footer />
