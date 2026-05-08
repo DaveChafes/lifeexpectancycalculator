@@ -482,6 +482,71 @@ export default function Home() {
             }}
           >
             <div>
+              <h2 style={H2_STYLE}>Explore More</h2>
+              <p style={{ ...P_STYLE, marginTop: '6px' }}>
+                Learn what the data says about longevity.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ marginTop: 16 }}>
+                <a
+                  href="/life-expectancy-by-state"
+                  style={{ textDecoration: 'none' }}
+                  className="bg-[#fffdf7] hover:bg-[#f7f0e0] border border-[#e8dfc8] rounded-[12px] p-[20px] transition-[background] duration-150 ease-in-out"
+                >
+                  <div className="flex flex-col h-full">
+                    <div style={{ fontWeight: 600, color: '#1a1612', fontSize: 16 }}>
+                      Life Expectancy by State
+                    </div>
+                    <div style={{ fontSize: 14, color: '#6b5e4e', marginTop: 6 }}>
+                      See how your state ranks and what drives the differences.
+                    </div>
+                    <div
+                      style={{
+                        marginTop: '16px',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        color: '#c9a84c',
+                        fontSize: 16,
+                        fontWeight: 700,
+                      }}
+                      aria-hidden
+                    >
+                      →
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="/life-expectancy-men-vs-women"
+                  style={{ textDecoration: 'none' }}
+                  className="bg-[#fffdf7] hover:bg-[#f7f0e0] border border-[#e8dfc8] rounded-[12px] p-[20px] transition-[background] duration-150 ease-in-out"
+                >
+                  <div className="flex flex-col h-full">
+                    <div style={{ fontWeight: 600, color: '#1a1612', fontSize: 16 }}>
+                      Men vs Women
+                    </div>
+                    <div style={{ fontSize: 14, color: '#6b5e4e', marginTop: 6 }}>
+                      Why women live 5 years longer — and what men can do about it.
+                    </div>
+                    <div
+                      style={{
+                        marginTop: '16px',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        color: '#c9a84c',
+                        fontSize: 16,
+                        fontWeight: 700,
+                      }}
+                      aria-hidden
+                    >
+                      →
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div>
               <h2 style={H2_STYLE}>How This Calculator Works</h2>
               <p style={P_STYLE}>
                 This tool begins with your date of birth and biological sex, then pulls

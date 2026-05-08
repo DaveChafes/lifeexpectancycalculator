@@ -10,6 +10,35 @@ const WRAP_STYLE: React.CSSProperties = {
   gap: '16px',
 };
 
+const LEARN_MORE_WRAP_STYLE: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 10,
+};
+
+const LEARN_MORE_HEADING_STYLE: React.CSSProperties = {
+  margin: 0,
+  fontSize: '12px',
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: '#c9a84c',
+  fontWeight: 700,
+};
+
+const LEARN_MORE_LINKS_STYLE: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 10,
+  fontSize: '14px',
+  alignItems: 'center',
+};
+
+const LEARN_MORE_LINK_STYLE: React.CSSProperties = {
+  color: '#9a8f7a',
+  textDecoration: 'none',
+};
+
 const SITE_NAME_STYLE: React.CSSProperties = {
   fontFamily: 'var(--font-lora), Georgia, serif',
   fontSize: '16px',
@@ -82,6 +111,29 @@ export default function Footer() {
           Privacy Policy
         </Link>
       </nav>
+
+      <div style={LEARN_MORE_WRAP_STYLE} aria-label="Learn more links">
+        <p style={LEARN_MORE_HEADING_STYLE} className="text-xs uppercase tracking-widest">
+          Learn More
+        </p>
+        <div style={LEARN_MORE_LINKS_STYLE}>
+          <Link href="/life-expectancy-by-state" style={LEARN_MORE_LINK_STYLE}>
+            Life Expectancy by State
+          </Link>
+          <Link href="/life-expectancy-men-vs-women" style={LEARN_MORE_LINK_STYLE}>
+            Life Expectancy: Men vs Women
+          </Link>
+          <Link href="/methodology" style={LEARN_MORE_LINK_STYLE}>
+            Methodology
+          </Link>
+          <Link href="/about" style={LEARN_MORE_LINK_STYLE}>
+            About
+          </Link>
+          <Link href="/privacy" style={LEARN_MORE_LINK_STYLE}>
+            Privacy Policy
+          </Link>
+        </div>
+      </div>
 
       <div style={DIVIDER_STYLE} />
 
