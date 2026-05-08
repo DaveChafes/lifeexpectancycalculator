@@ -157,6 +157,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
 
     const WAVE_DURATION = 4000;
     const startTime = performance.now();
+    let dissolveStarted = false;
 
     function getWaveDelay(index: number): number {
       const col = index % COLS;
@@ -181,16 +182,40 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         }
       }
 
-      if (!allDone) {
-        animFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        animFrameRef.current = requestAnimationFrame(() => animateCurrentCircle(ctx2));
-      }
-    }
+      const lastLivedIndex = Math.max(0, monthsLived - 1);
+      const currentDelay = getWaveDelay(lastLivedIndex) + 300;
+      const currentProgress = Math.max(0, Math.min(1, (elapsed - currentDelay) / 250));
 
-    function animateCurrentCircle(ctx3: CanvasRenderingContext2D) {
-      drawCurrentCircle(ctx3, monthsLived);
-      setTimeout(() => animateRemainingDissolve(ctx3), 800);
+      if (currentProgress > 0) {
+        const scale =
+          currentProgress < 0.6
+            ? currentProgress / 0.6
+            : 1 + Math.sin(((currentProgress - 0.6) / 0.4) * Math.PI) * 0.12;
+
+        const { x, y } = getCenter(monthsLived);
+        ctx2.save();
+        ctx2.translate(x, y);
+        ctx2.scale(scale, scale);
+        ctx2.beginPath();
+        ctx2.arc(0, 0, RADIUS, 0, Math.PI * 2);
+        ctx2.fillStyle = '#fffdf7';
+        ctx2.fill();
+        ctx2.beginPath();
+        ctx2.arc(0, 0, RADIUS, 0, Math.PI * 2);
+        ctx2.strokeStyle = '#c9a84c';
+        ctx2.lineWidth = 2;
+        ctx2.stroke();
+        ctx2.restore();
+      }
+
+      if (allDone && currentProgress >= 1 && !dissolveStarted) {
+        dissolveStarted = true;
+        drawCurrentCircle(ctx2, monthsLived);
+        animateRemainingDissolve(ctx2);
+        return;
+      }
+
+      animFrameRef.current = requestAnimationFrame(animate);
     }
 
     function animateRemainingDissolve(ctx3: CanvasRenderingContext2D) {
@@ -203,7 +228,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         [remainingIndices[i], remainingIndices[j]] = [remainingIndices[j], remainingIndices[i]];
       }
 
-      const DISSOLVE_DURATION = 2500;
+      const DISSOLVE_DURATION = 1500;
       const startTime3 = performance.now();
       const total = remainingIndices.length;
       let lastRevealed = 0;

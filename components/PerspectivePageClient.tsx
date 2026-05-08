@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AdUnit from '@/components/AdUnit';
 import ShareCard from '@/components/ShareCard';
@@ -119,6 +120,7 @@ function FactCard({ front, back }: FactCardProps) {
 }
 
 export default function PerspectivePageClient() {
+  const router = useRouter();
   const [params, setParams] = useState<{
     years: number;
     weeks: number;
@@ -261,18 +263,22 @@ export default function PerspectivePageClient() {
   return (
     <main style={{ backgroundColor: '#f7f2e8', minHeight: '100vh', padding: '60px 24px' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <Link
-          href="/"
+        <button
+          onClick={() => router.push('/')}
           style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
             fontSize: '14px',
             color: '#9a8f7a',
+            padding: 0,
             textDecoration: 'none',
             display: 'block',
             marginBottom: '32px',
           }}
         >
-          ← Back to calculator
-        </Link>
+          ← Back to your results
+        </button>
 
         <h1
           style={{
