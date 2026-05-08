@@ -373,11 +373,13 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
         <BmiSlider value={modifiers.bmi} onChange={(v) => patch({ bmi: v })} />
       ),
       resource:
-        modifiers.bmi > 34.9
-          ? { kind: 'bmi_obese', show: true }
-          : modifiers.bmi > 29.9
-            ? { kind: 'bmi_overweight', show: true }
-            : { kind: 'bmi_overweight', show: false },
+        modifiers.bmi < 18.5
+          ? { kind: 'bmi_underweight', show: true }
+          : modifiers.bmi > 34.9
+            ? { kind: 'bmi_obese', show: true }
+            : modifiers.bmi > 29.9
+              ? { kind: 'bmi_overweight', show: true }
+              : { kind: 'bmi_overweight', show: false },
     },
     {
       icon: <Dumbbell size={18} color={ICON_COLOR} aria-hidden />,
@@ -494,6 +496,13 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
             flex-wrap: wrap;
             gap: 10px;
           }
+          .sliders-resource-row {
+            gap: 10px !important;
+          }
+          .sliders-resource-spacer,
+          .sliders-resource-right-spacer {
+            display: none !important;
+          }
           .sliders-label-col {
             width: 100px !important;
           }
@@ -534,12 +543,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                 <div style={rowBase(index, last)} className="sliders-row">
                   <div style={labelCol} className="sliders-label-col">
                     {row.icon}
-                    <span style={{ ...labelText, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                      {row.label}
-                      {row.resource && (
-                        <HealthResource kind={row.resource.kind} show={row.resource.show} />
-                      )}
-                    </span>
+                    <span style={labelText}>{row.label}</span>
                   </div>
                   <div style={centerCol}>{row.center}</div>
                   <div
@@ -556,6 +560,31 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                     <DeltaBadge yearsDelta={y} visible={showBadge} />
                   </div>
                 </div>
+                {row.resource && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '16px',
+                      paddingBottom: last ? 0 : 16,
+                      ...rowOpacity(index),
+                    }}
+                    className="sliders-resource-row"
+                  >
+                    <div
+                      style={{ ...labelCol, opacity: 0 }}
+                      aria-hidden
+                      className="sliders-resource-spacer"
+                    />
+                    <div style={centerCol}>
+                      <HealthResource kind={row.resource.kind} show={row.resource.show} />
+                    </div>
+                    <div
+                      style={{ width: 100, flexShrink: 0 }}
+                      aria-hidden
+                      className="sliders-resource-right-spacer"
+                    />
+                  </div>
+                )}
               </div>
             );
           })}

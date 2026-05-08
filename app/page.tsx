@@ -166,6 +166,40 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    function onLogoClick() {
+      if (step !== 'result') return;
+      const stored = sessionStorage.getItem('lifeCalcResult');
+      if (!stored) return;
+      try {
+        const parsed = JSON.parse(stored) as {
+          birthDate?: string;
+          sex?: 'male' | 'female';
+          estimatedDeathAge?: number;
+        };
+        if (!parsed.birthDate || !parsed.sex) return;
+
+        const result = getBaseLifeExpectancy(parsed.sex, parsed.birthDate);
+        setBirthDate(parsed.birthDate);
+        setSex(parsed.sex);
+        setBaseResult(result);
+        setAdjustedDeathAge(parsed.estimatedDeathAge ?? result.estimatedDeathAge);
+        setComparisons(
+          getDemographicComparisons(result.estimatedDeathAge, parsed.sex, result.currentAge)
+        );
+        setPercentile(
+          getPercentileVsPeers(result.estimatedDeathAge, parsed.sex, result.currentAge)
+        );
+        setStep('result');
+      } catch {
+        // ignore
+      }
+    }
+
+    window.addEventListener('lifeCalc:logoClick', onLogoClick);
+    return () => window.removeEventListener('lifeCalc:logoClick', onLogoClick);
+  }, [step]);
+
   const handleSubmit = useCallback(
     (inputs: { birthDate: string; sex: 'male' | 'female' }) => {
       setLoading(true);

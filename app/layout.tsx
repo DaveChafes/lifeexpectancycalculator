@@ -116,6 +116,7 @@ export default function RootLayout({
           <div style={{ flexShrink: 0 }}>
             <NavBar />
           </div>
+          <div style={{ height: '56px', flexShrink: 0 }} aria-hidden />
           <div style={{ flex: '1 0 auto' }}>{children}</div>
           <div style={{ flexShrink: 0 }}>
             <Footer />
