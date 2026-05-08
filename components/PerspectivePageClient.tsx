@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AdUnit from '@/components/AdUnit';
 import ShareCard from '@/components/ShareCard';
+import StickyLifespanBar from '@/components/StickyLifespanBar';
 
 interface FactCardProps {
   front: string;
@@ -372,8 +373,25 @@ export default function PerspectivePageClient() {
     },
   ];
 
+  const stickyEstimatedAge = params?.estimatedDeathAge;
+  const stickyEstimatedYear = params?.estimatedDeathYear;
+  const stickyWeeksRemaining = params?.weeksRemaining ?? params?.weeks;
+
   return (
-    <main style={{ backgroundColor: '#f7f2e8', minHeight: '100vh', padding: '60px 24px' }}>
+    <>
+      {stickyEstimatedAge != null &&
+        stickyEstimatedYear != null &&
+        stickyWeeksRemaining != null && (
+          <StickyLifespanBar
+            estimatedAge={stickyEstimatedAge}
+            baseAge={stickyEstimatedAge}
+            estimatedDeathYear={stickyEstimatedYear}
+            weeksRemaining={stickyWeeksRemaining}
+            isVisible={true}
+            onPillClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          />
+        )}
+      <main style={{ backgroundColor: '#f7f2e8', minHeight: '100vh', padding: '60px 24px' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <button
           onClick={() => router.push('/')}
@@ -500,6 +518,7 @@ export default function PerspectivePageClient() {
         </p>
       </div>
     </main>
+    </>
   );
 }
 

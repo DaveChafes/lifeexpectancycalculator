@@ -63,8 +63,8 @@ export default function NavBar() {
             router.push('/');
           }}
         >
-          <span className="sm:hidden" style={{ fontSize: '14px' }}>
-            Life Expectancy
+          <span className="sm:hidden" style={{ fontSize: '13px' }}>
+            Life Expectancy Calculator
           </span>
           <span className="hidden sm:inline">Life Expectancy Calculator</span>
         </button>
@@ -110,25 +110,53 @@ export default function NavBar() {
           ))}
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          className="sm:hidden"
-          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-          onClick={() => setMobileMenuOpen((v) => !v)}
-          style={{
-            cursor: 'pointer',
-            background: 'transparent',
-            border: 'none',
-            padding: 0,
-            color: '#d1d5db',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {mobileMenuOpen ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />}
-        </button>
+        {/* Mobile right controls: Home + hamburger */}
+        <div className="sm:hidden" style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <button
+            type="button"
+            aria-label="Home"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              if (typeof window !== 'undefined') {
+                sessionStorage.removeItem('lifeCalcResult');
+              }
+              window.location.href = '/';
+            }}
+            style={{
+              cursor: 'pointer',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              color: '#fbbf24',
+              fontSize: '13px',
+              fontWeight: 400,
+            }}
+          >
+            <Home size={20} color="#fbbf24" aria-hidden />
+            <span style={{ color: '#fbbf24' }}>Home</span>
+          </button>
+
+          <button
+            type="button"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMobileMenuOpen((v) => !v)}
+            style={{
+              cursor: 'pointer',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              color: '#d1d5db',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {mobileMenuOpen ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />}
+          </button>
+        </div>
       </nav>
 
       {/* Overlay behind dropdown */}
@@ -161,30 +189,22 @@ export default function NavBar() {
           background: '#0f0f0f',
           borderBottom: '1px solid #1f2937',
           overflow: 'hidden',
-          maxHeight: mobileMenuOpen ? 300 : 0,
+          maxHeight: mobileMenuOpen ? 200 : 0,
           transition: mobileMenuOpen
             ? 'max-height 250ms ease-out'
             : 'max-height 200ms ease-in',
         }}
       >
         {[
-          { href: '/', label: 'Home', isHome: true },
           { href: '/about', label: 'About' },
           { href: '/methodology', label: 'Methodology' },
           { href: '/privacy', label: 'Privacy' },
-        ].map(({ href, label, isHome }, idx, arr) => (
+        ].map(({ href, label }, idx, arr) => (
           <button
             key={href}
             type="button"
             onClick={() => {
               setMobileMenuOpen(false);
-              if (isHome) {
-                if (typeof window !== 'undefined') {
-                  sessionStorage.removeItem('lifeCalcResult');
-                }
-                window.location.href = '/';
-                return;
-              }
               router.push(href);
             }}
             style={{
