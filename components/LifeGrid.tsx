@@ -28,6 +28,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const animFrameRef = useRef<number>(0);
   const [hasStarted, setHasStarted] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
+  const [scale, setScale] = useState(1);
 
   const COLS = 24;
   const RADIUS = 8;
@@ -121,6 +122,20 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasStarted]);
+
+  useEffect(() => {
+    function updateScale() {
+      const container = containerRef.current;
+      if (!container) return;
+      const availableWidth = container.clientWidth;
+      const naturalWidth = COLS * CELL;
+      const newScale = Math.min(1, availableWidth / naturalWidth);
+      setScale(newScale);
+    }
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, [COLS, CELL]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -263,13 +278,21 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
+          overflow: 'hidden',
         }}
       >
         <canvas
           ref={canvasRef}
           width={canvasWidth}
           height={canvasHeight}
-          style={{ display: 'block' }}
+          style={{
+            display: 'block',
+            transformOrigin: 'top left',
+            transform: `scale(${scale})`,
+            width: canvasWidth,
+            height: canvasHeight,
+            marginBottom: `${canvasHeight * (scale - 1)}px`,
+          }}
         />
       </div>
 
