@@ -72,9 +72,6 @@ export default function Footer() {
         <Link href="/" style={LINK_STYLE} className="footer-link">
           Home
         </Link>
-        <Link href="/perspective" style={LINK_STYLE} className="footer-link">
-          Perspective
-        </Link>
         <Link href="/about" style={LINK_STYLE} className="footer-link">
           About
         </Link>

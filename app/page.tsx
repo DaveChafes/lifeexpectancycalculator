@@ -159,6 +159,12 @@ export default function Home() {
           JSON.stringify({
             years: result.yearsRemaining,
             weeks: result.weeksRemaining,
+            birthDate: inputs.birthDate,
+            sex: inputs.sex,
+            estimatedDeathAge: result.estimatedDeathAge,
+            estimatedDeathYear: result.estimatedDeathYear,
+            currentAge: result.currentAge,
+            weeksRemaining: result.weeksRemaining,
           })
         );
       }

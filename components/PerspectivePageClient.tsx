@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import AdUnit from '@/components/AdUnit';
+import ShareCard from '@/components/ShareCard';
 
 interface FactCardProps {
   front: string;
@@ -118,13 +119,33 @@ function FactCard({ front, back }: FactCardProps) {
 }
 
 export default function PerspectivePageClient() {
-  const [params, setParams] = useState<{ years: number; weeks: number } | null>(null);
+  const [params, setParams] = useState<{
+    years: number;
+    weeks: number;
+    birthDate?: string;
+    sex?: string;
+    estimatedDeathAge?: number;
+    estimatedDeathYear?: number;
+    currentAge?: number;
+    weeksRemaining?: number;
+  } | null>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem('lifeCalcResult');
     if (stored) {
       try {
-        setParams(JSON.parse(stored) as { years: number; weeks: number });
+        setParams(
+          JSON.parse(stored) as {
+            years: number;
+            weeks: number;
+            birthDate?: string;
+            sex?: string;
+            estimatedDeathAge?: number;
+            estimatedDeathYear?: number;
+            currentAge?: number;
+            weeksRemaining?: number;
+          }
+        );
       } catch {
         setParams(null);
       }
@@ -318,6 +339,34 @@ export default function PerspectivePageClient() {
         </div>
 
         <AdUnit slotId="slot-perspective-bottom" format="rectangle" />
+
+        {params && (
+          <div style={{ marginTop: '48px', marginBottom: '24px' }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-lora), Georgia, serif',
+                fontSize: '24px',
+                fontWeight: 700,
+                color: '#1a1612',
+                textAlign: 'center',
+                marginBottom: '24px',
+              }}
+            >
+              Share your perspective
+            </h2>
+            <ShareCard
+              estimatedDeathAge={Math.round(params.years + (new Date().getFullYear() - 1990))}
+              estimatedDeathYear={new Date().getFullYear() + Math.round(params.years)}
+              percentileVsPeers={50}
+              sex={params.sex as 'male' | 'female'}
+              currentAge={Math.round(
+                (Date.now() - new Date(params.birthDate ?? '1990-01-01').getTime()) /
+                  (365.25 * 24 * 60 * 60 * 1000)
+              )}
+              weeksRemaining={params.weeks}
+            />
+          </div>
+        )}
 
         <p
           style={{
