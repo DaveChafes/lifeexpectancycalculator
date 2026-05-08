@@ -296,7 +296,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         />
       </div>
 
-      {statsVisible ? (
+      {statsVisible && (
         <div
           style={{
             marginTop: '24px',
@@ -306,19 +306,27 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
             gap: '6px',
           }}
         >
-          <p style={{ fontSize: '14px', color: '#9a8f7a', margin: 0 }}>
+          <p style={{ fontSize: '14px', color: '#9a8f7a' }}>
             You have lived{' '}
             <strong style={{ color: '#4a3f2f' }}>{monthsLived.toLocaleString()} months</strong> —
             approximately{' '}
             <strong style={{ color: '#4a3f2f' }}>{weeksLived.toLocaleString()} weeks</strong>.
           </p>
-          <p style={{ fontSize: '14px', color: '#9a8f7a', margin: 0 }}>
+          <p style={{ fontSize: '14px', color: '#9a8f7a' }}>
             Approximately{' '}
-            <strong style={{ color: '#c9a84c' }}>{weeksRemaining.toLocaleString()} weeks</strong>{' '}
+            <strong style={{ color: '#c9a84c' }}>
+              {(totalMonths - monthsLived).toLocaleString()} months
+            </strong>
+            ,{' '}
+            <strong style={{ color: '#c9a84c' }}>{weeksRemaining.toLocaleString()} weeks</strong>,
+            and{' '}
+            <strong style={{ color: '#c9a84c' }}>
+              {Math.round((totalMonths - monthsLived) / 12)} years
+            </strong>{' '}
             remain. Make them count.
           </p>
         </div>
-      ) : null}
+      )}
     </section>
   );
 }
