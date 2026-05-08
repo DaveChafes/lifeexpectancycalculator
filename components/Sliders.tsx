@@ -13,6 +13,7 @@ import {
   Scale,
   Wine,
 } from 'lucide-react';
+import HealthResource, { type HealthResourceKind } from '@/components/HealthResource';
 import {
   useEffect,
   useMemo,
@@ -346,6 +347,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
     label: string;
     factor: string;
     center: ReactNode;
+    resource?: { kind: HealthResourceKind; show: boolean };
   }[] = [
     {
       icon: <CigaretteOff size={18} color={ICON_COLOR} aria-hidden />,
@@ -358,6 +360,10 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           onChange={(v) => patch({ smoking: v })}
         />
       ),
+      resource: {
+        kind: 'smoking',
+        show: modifiers.smoking === 'occasional' || modifiers.smoking === 'daily',
+      },
     },
     {
       icon: <Scale size={18} color={ICON_COLOR} aria-hidden />,
@@ -366,6 +372,12 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
       center: (
         <BmiSlider value={modifiers.bmi} onChange={(v) => patch({ bmi: v })} />
       ),
+      resource:
+        modifiers.bmi > 34.9
+          ? { kind: 'bmi_obese', show: true }
+          : modifiers.bmi > 29.9
+            ? { kind: 'bmi_overweight', show: true }
+            : { kind: 'bmi_overweight', show: false },
     },
     {
       icon: <Dumbbell size={18} color={ICON_COLOR} aria-hidden />,
@@ -378,6 +390,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           onChange={(v) => patch({ exercise: v })}
         />
       ),
+      resource: { kind: 'exercise', show: modifiers.exercise === 'sedentary' },
     },
     {
       icon: <Wine size={18} color={ICON_COLOR} aria-hidden />,
@@ -390,6 +403,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           onChange={(v) => patch({ alcohol: v })}
         />
       ),
+      resource: { kind: 'alcohol', show: modifiers.alcohol === 'heavy' },
     },
     {
       icon: <Moon size={18} color={ICON_COLOR} aria-hidden />,
@@ -402,6 +416,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           onChange={(v) => patch({ sleep: v })}
         />
       ),
+      resource: { kind: 'sleep', show: modifiers.sleep === 'poor' },
     },
     {
       icon: <Brain size={18} color={ICON_COLOR} aria-hidden />,
@@ -414,6 +429,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           onChange={(v) => patch({ stress: v })}
         />
       ),
+      resource: { kind: 'stress', show: modifiers.stress === 'high' },
     },
     {
       icon: <Apple size={18} color={ICON_COLOR} aria-hidden />,
@@ -426,6 +442,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           onChange={(v) => patch({ diet: v })}
         />
       ),
+      resource: { kind: 'diet', show: modifiers.diet === 'poor' },
     },
   ];
 
@@ -513,25 +530,43 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
             const showBadge = yearsDiffForFactor(row.factor, y);
             const last = index === rows.length - 1;
             return (
-              <div key={row.factor} style={rowBase(index, last)} className="sliders-row">
-                <div style={labelCol} className="sliders-label-col">
-                  {row.icon}
-                  <span style={labelText}>{row.label}</span>
+              <div key={row.factor}>
+                <div style={rowBase(index, last)} className="sliders-row">
+                  <div style={labelCol} className="sliders-label-col">
+                    {row.icon}
+                    <span style={labelText}>{row.label}</span>
+                  </div>
+                  <div style={centerCol}>{row.center}</div>
+                  <div
+                    style={{
+                      flexShrink: 0,
+                      width: 100,
+                      textAlign: 'right',
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}
+                    className="sliders-badge-col"
+                  >
+                    <DeltaBadge yearsDelta={y} visible={showBadge} />
+                  </div>
                 </div>
-                <div style={centerCol}>{row.center}</div>
-                <div
-                  style={{
-                    flexShrink: 0,
-                    width: 100,
-                    textAlign: 'right',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                  }}
-                  className="sliders-badge-col"
-                >
-                  <DeltaBadge yearsDelta={y} visible={showBadge} />
-                </div>
+                {row.resource && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '16px',
+                      paddingBottom: last ? 0 : 16,
+                      ...rowOpacity(index),
+                    }}
+                  >
+                    <div style={{ ...labelCol, opacity: 0 }} aria-hidden />
+                    <div style={centerCol}>
+                      <HealthResource kind={row.resource.kind} show={row.resource.show} />
+                    </div>
+                    <div style={{ width: 100, flexShrink: 0 }} aria-hidden />
+                  </div>
+                )}
               </div>
             );
           })}

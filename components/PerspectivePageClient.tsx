@@ -8,7 +8,7 @@ import ShareCard from '@/components/ShareCard';
 
 interface FactCardProps {
   front: string;
-  back: string;
+  back: React.ReactNode;
 }
 
 function FactCard({ front, back }: FactCardProps) {
@@ -178,6 +178,118 @@ export default function PerspectivePageClient() {
   const nonWorkingPercent = 100 - workingPercent;
 
   const facts = [
+    // Health change cards (always first)
+    {
+      front: 'Quit smoking. Your heart notices in 12 months.',
+      back: (
+        <div>
+          <div>
+            Quitting smoking cuts your risk of heart disease in half within just 1 year. Within 15
+            years, your risk matches someone who never smoked.
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+            Source: CDC, Benefits of Quitting Smoking
+          </div>
+        </div>
+      ),
+    },
+    {
+      front: "22 minutes a day. That's all it takes.",
+      back: (
+        <div>
+          <div>
+            Just 150 minutes of moderate exercise per week — 22 minutes a day — reduces all-cause
+            mortality risk by up to 31%. You don&apos;t need to run a marathon. You need to move.
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+            Source: American Heart Association, 2022
+          </div>
+        </div>
+      ),
+    },
+    {
+      front: 'Your sleep is your longevity. Guard it.',
+      back: (
+        <div>
+          <div>
+            Sleeping under 6 hours per night is linked to a 13% higher mortality risk. Fixing your
+            sleep costs nothing and starts working the first night.
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+            Source: Sleep Medicine Reviews, Cappuccio et al.
+          </div>
+        </div>
+      ),
+    },
+    {
+      front: 'Loneliness is as dangerous as smoking.',
+      back: (
+        <div>
+          <div>
+            Chronic loneliness carries a 26% increased risk of early death — roughly the same
+            mortality impact as smoking 15 cigarettes a day.
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+            Source: Holt-Lunstad et al., Perspectives on Psychological Science, 2015
+          </div>
+        </div>
+      ),
+    },
+    {
+      front: "The Mediterranean diet doesn't count calories. It just works.",
+      back: (
+        <div>
+          <div>
+            Switching to a Mediterranean diet is associated with up to 25% lower risk of
+            cardiovascular death — no calorie counting, just different foods.
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+            Source: New England Journal of Medicine, PREDIMED Study
+          </div>
+        </div>
+      ),
+    },
+    {
+      front: "Stress doesn't just feel bad. It ages your DNA.",
+      back: (
+        <div>
+          <div>
+            Chronic high stress accelerates cellular aging by shortening telomeres — the biological
+            equivalent of fraying the ends of your DNA. Meditation and social connection are the two
+            best-studied reversals.
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+            Source: Blackburn &amp; Epel, The Telomere Effect
+          </div>
+        </div>
+      ),
+    },
+    // Historical cards
+    {
+      front: 'Ancient Romans lived to 35. Or did they?',
+      back: `Ancient Romans had a life expectancy of ~35 — but that's almost entirely infant mortality skewing the average. Survive to 30 and you'd likely see 60+. Life expectancy numbers hide as much as they reveal.`,
+    },
+    {
+      front: '400 weeks. One moon landing.',
+      back: `The Apollo program — JFK's speech to Neil Armstrong's boot on the moon — took 400 weeks. That's 7 years and 8 months. One focused decade changed human history.`,
+    },
+    // Fun fact cards
+    {
+      front: "Your great-grandparents were supposed to die at 47.",
+      back: `A person born in 1900 in the US had a life expectancy of 47. Born today: 77. That's 30 extra years — about 1,560 weeks, or 360 months — won entirely through sanitation, vaccines, and medicine. You inherited those bonus years. Use them.`,
+    },
+    {
+      front: "Japan lives 7 years longer. Here's why.",
+      back: `Japan leads the world at ~84 years average. The US sits at ~77. That 7-year gap — 364 weeks, roughly 3 years and 5 months — is largely explained by diet, daily walking, and lower obesity rates. The difference isn't genetic. It's behavioral.`,
+    },
+    {
+      front: "You're watching your life away.",
+      back: `The average American spends ~9 weeks per year watching TV. Over a 40-year adult life, that's 360 weeks — nearly 7 years — on the couch.`,
+    },
+    {
+      front: '122 years old. 2 lbs of chocolate per week.',
+      back: `Jeanne Calment lived to 122 — the oldest verified human ever. She ate 2 lbs of chocolate per week, rode a bicycle until 100, and credited her longevity to one thing: 'no stress.'`,
+    },
     {
       front: `${weekendsRemaining.toLocaleString()} weekends remaining`,
       back: `That's ${weekendsRemaining.toLocaleString()} opportunities to rest, explore, and be with people you love. Most people spend them on autopilot. You don't have to.`,
