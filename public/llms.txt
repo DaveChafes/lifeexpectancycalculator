@@ -3,10 +3,31 @@
 
 This tool calculates estimated lifespan based on U.S. Social Security Administration and CDC actuarial data. Users enter their date of birth and biological sex to receive a baseline estimate, then adjust lifestyle factors (smoking, BMI, exercise, sleep, stress, diet) to see how choices affect their estimated lifespan. Results are visualized as an animated number, a life bar, a life-in-weeks grid, and demographic comparison charts.
 
+A sticky lifespan bar appears at the top of the page on desktop as the user scrolls past their result, showing their current estimated age and death year updating live as sliders change. On mobile, a floating pill at the bottom of the screen serves the same purpose and taps to scroll back to the result.
+
+Lifestyle sliders include contextual health resource cards that appear when the user selects a negative option (e.g. daily smoking, sedentary exercise, poor sleep). Each card shows an empowering headline and a link to a relevant free resource. Resources are sourced from CDC, American Heart Association, Smokefree.gov, and other public health organizations.
+
 All calculations are performed client-side. No personal data is collected.
 
 Data sources: SSA 2022 Period Life Table, CDC National Center for Health Statistics.
 
 ## /perspective
 A page of 32 personalized perspective facts based on the user's calculated remaining lifespan. Facts include weekends remaining, sunrises, meals with loved ones, books readable, albums discoverable, sporting events, and futuristic milestones. Each fact is a flippable card with a deeper insight on the back. Facts scale to the user's specific years remaining.
+
+The page is divided into three sections of cards: health change facts (appearing first, covering smoking cessation, exercise, sleep, loneliness, diet, and stress with cited sources), historical facts (Apollo program, Ancient Rome life expectancy), and fun facts (US life expectancy over time, Japan vs US comparison, Jeanne Calment, TV time, and others).
+
+The sticky lifespan bar and floating pill are also active on the /perspective page, pulling the user's saved calculation from sessionStorage. Both are hidden if no calculation exists.
+
+## Navigation
+The site includes a fixed navbar on all pages. Desktop shows full nav links: Home, About, Methodology, Privacy. Mobile shows a hamburger menu containing About, Methodology, and Privacy, plus a Home button in the header. The navbar is fixed and follows the user as they scroll.
+
+## Pages
+- / — main calculator tool
+- /about — founder story and product philosophy
+- /methodology — data sources and modifier logic explained
+- /privacy — privacy policy
+- /perspective — 32 perspective fact cards
+- /sitemap.xml — sitemap
+- /robots.txt — crawler instructions
+- /llms.txt — this file
 
