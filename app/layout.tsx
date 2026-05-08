@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Lora } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import Footer from '@/components/Footer';
 
@@ -85,6 +86,18 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
       </head>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-R1799YQGHN"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-R1799YQGHN');
+        `}
+      </Script>
       <body
         style={{ backgroundColor: '#f7f2e8', minHeight: '100vh' }}
         className={`${lora.variable} antialiased`}
