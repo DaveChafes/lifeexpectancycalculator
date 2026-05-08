@@ -43,6 +43,7 @@ export default function NavBar() {
         }}
       >
         {[
+          { href: '/perspective', label: 'Perspective' },
           { href: '/about', label: 'About' },
           { href: '/methodology', label: 'Methodology' },
           { href: '/privacy', label: 'Privacy' },
