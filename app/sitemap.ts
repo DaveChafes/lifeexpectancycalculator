@@ -38,6 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly' as const,
       priority: 0.8,
     },
+    {
+      url: 'https://whenwillidiecalculator.com/life-expectancy-men-vs-women',
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.8,
+    },
   ];
 }
 
