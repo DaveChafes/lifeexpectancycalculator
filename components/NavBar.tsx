@@ -8,6 +8,17 @@ export default function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const navLinkStyle = (href: string) => ({
+    fontSize: '13px',
+    fontWeight: pathname === href ? 600 : 400,
+    color: pathname === href ? '#fbbf24' : '#d1d5db',
+    textDecoration: 'none',
+    transition: 'color 0.15s ease',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
+  });
+
   return (
     <nav
       style={{
@@ -39,8 +50,8 @@ export default function NavBar() {
           letterSpacing: '-0.01em',
         }}
         onClick={() => {
-          if (pathname === '/' && typeof window !== 'undefined' && sessionStorage.getItem('lifeCalcResult')) {
-            window.dispatchEvent(new Event('lifeCalc:logoClick'));
+          if (pathname === '/') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
           }
           router.push('/');
@@ -56,28 +67,22 @@ export default function NavBar() {
           gap: '24px',
         }}
       >
+        <a href="/" style={navLinkStyle('/')}>
+          <Home size={16} color={pathname === '/' ? '#fbbf24' : '#d1d5db'} aria-hidden />
+          <span style={{ color: pathname === '/' ? '#fbbf24' : '#d1d5db' }}>Home</span>
+        </a>
+
         {[
-          { href: '/', label: 'Home', icon: <Home size={16} aria-hidden /> },
           { href: '/about', label: 'About' },
           { href: '/methodology', label: 'Methodology' },
           { href: '/privacy', label: 'Privacy' },
-        ].map(({ href, label, icon }) => (
+        ].map(({ href, label }) => (
           <Link
             key={href}
             href={href}
-            style={{
-              fontSize: '13px',
-              fontWeight: pathname === href ? 600 : 400,
-              color: pathname === href ? '#fbbf24' : '#d1d5db',
-              textDecoration: 'none',
-              transition: 'color 0.15s ease',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
+            style={navLinkStyle(href)}
           >
-            {icon ?? null}
-            {icon ? null : label}
+            {label}
           </Link>
         ))}
       </div>

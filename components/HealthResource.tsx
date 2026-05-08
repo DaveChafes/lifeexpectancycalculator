@@ -88,7 +88,9 @@ export default function HealthResource({
     width: '100%',
     maxWidth: 400,
     opacity: show ? 1 : 0,
-    transition: 'opacity 200ms ease, max-height 200ms ease, margin-top 200ms ease',
+    transition: show
+      ? 'opacity 350ms ease-out, max-height 350ms ease-out, margin-top 350ms ease-out'
+      : 'opacity 250ms ease-in, max-height 250ms ease-in, margin-top 250ms ease-in',
     maxHeight: show ? 120 : 0,
     overflow: 'hidden',
     marginTop: show ? 10 : 0,
