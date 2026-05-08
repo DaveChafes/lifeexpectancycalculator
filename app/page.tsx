@@ -12,7 +12,8 @@ import {
   getPercentileVsPeers,
 } from '@/lib/calculator';
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import StickyLifespanBar from '@/components/StickyLifespanBar';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const ComparisonChart = dynamic(() => import('@/components/ComparisonChart'), {
   ssr: false,
@@ -137,6 +138,8 @@ export default function Home() {
     { label: string; age: number; isUser: boolean }[]
   >([]);
   const [percentile, setPercentile] = useState<number>(0);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const [isStickyVisible, setIsStickyVisible] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -198,6 +201,22 @@ export default function Home() {
 
     window.addEventListener('lifeCalc:logoClick', onLogoClick);
     return () => window.removeEventListener('lifeCalc:logoClick', onLogoClick);
+  }, [step]);
+
+  useEffect(() => {
+    if (step !== 'result') return;
+    const el = resultRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const e = entries[0];
+        if (!e) return;
+        setIsStickyVisible(!e.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [step]);
 
   const handleSubmit = useCallback(
@@ -334,6 +353,12 @@ export default function Home() {
         <main
           style={{ backgroundColor: '#f7f2e8', minHeight: '100vh', paddingTop: '0' }}
         >
+          <StickyLifespanBar
+            estimatedAge={displayDeathAge}
+            baseAge={baseResult.estimatedDeathAge}
+            isVisible={isStickyVisible}
+            onPillClick={() => resultRef.current?.scrollIntoView({ behavior: 'smooth' })}
+          />
           <div
             style={{
               maxWidth: '720px',
@@ -344,7 +369,7 @@ export default function Home() {
               gap: '64px',
             }}
           >
-            <section>
+            <section ref={resultRef}>
               <Result
                 birthDate={birthDate}
                 sex={sex}
