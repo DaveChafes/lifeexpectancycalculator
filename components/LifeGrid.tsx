@@ -28,13 +28,6 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const animFrameRef = useRef<number>(0);
   const [hasStarted, setHasStarted] = useState(false);
   const [scale, setScale] = useState(1);
-  const [animatedStats, setAnimatedStats] = useState({
-    monthsLivedDisplay: 0,
-    weeksLivedDisplay: 0,
-    monthsRemainingDisplay: 0,
-    weeksRemainingDisplay: 0,
-    yearsRemainingDisplay: 0,
-  });
   const [statsVisible, setStatsVisible] = useState(false);
 
   const COLS = 24;
@@ -230,39 +223,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         if (p < 1) {
           animFrameRef.current = requestAnimationFrame(dissolveFrame);
         } else {
-          const monthsRemaining = totalMonths - monthsLived;
-          const yearsRemaining = Math.round(monthsRemaining / 12);
-          const DURATION = 2500;
-          const statsStart = performance.now();
-
-          setAnimatedStats({
-            monthsLivedDisplay: 0,
-            weeksLivedDisplay: 0,
-            monthsRemainingDisplay: 0,
-            weeksRemainingDisplay: 0,
-            yearsRemainingDisplay: 0,
-          });
           setStatsVisible(true);
-
-          const animateNumbers = (now2: number) => {
-            const elapsed2 = now2 - statsStart;
-            const progress2 = Math.min(elapsed2 / DURATION, 1);
-            const eased2 = 1 - Math.pow(1 - progress2, 3);
-
-            setAnimatedStats({
-              monthsLivedDisplay: Math.round(eased2 * monthsLived),
-              weeksLivedDisplay: Math.round(eased2 * weeksLived),
-              monthsRemainingDisplay: Math.round(eased2 * monthsRemaining),
-              weeksRemainingDisplay: Math.round(eased2 * weeksRemaining),
-              yearsRemainingDisplay: Math.round(eased2 * yearsRemaining),
-            });
-
-            if (progress2 < 1) {
-              requestAnimationFrame(animateNumbers);
-            }
-          };
-
-          requestAnimationFrame(animateNumbers);
         }
       }
 
@@ -337,44 +298,38 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         />
       </div>
 
-      {statsVisible && (
-        <div
-          style={{
-            marginTop: '24px',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}
-        >
-          <p style={{ fontSize: '15px', color: '#9a8f7a', lineHeight: 1.8 }}>
-            You have lived{' '}
-            <strong style={{ color: '#4a3f2f', fontVariantNumeric: 'tabular-nums' }}>
-              {animatedStats.monthsLivedDisplay.toLocaleString()} months
-            </strong>{' '}
-            — approximately{' '}
-            <strong style={{ color: '#4a3f2f', fontVariantNumeric: 'tabular-nums' }}>
-              {animatedStats.weeksLivedDisplay.toLocaleString()} weeks
-            </strong>
-            .
-          </p>
-          <p style={{ fontSize: '15px', color: '#9a8f7a', lineHeight: 1.8 }}>
-            Approximately{' '}
-            <strong style={{ color: '#c9a84c', fontVariantNumeric: 'tabular-nums' }}>
-              {animatedStats.monthsRemainingDisplay.toLocaleString()} months
-            </strong>
-            ,{' '}
-            <strong style={{ color: '#c9a84c', fontVariantNumeric: 'tabular-nums' }}>
-              {animatedStats.weeksRemainingDisplay.toLocaleString()} weeks
-            </strong>
-            , and{' '}
-            <strong style={{ color: '#c9a84c', fontVariantNumeric: 'tabular-nums' }}>
-              {animatedStats.yearsRemainingDisplay.toLocaleString()} years
-            </strong>{' '}
-            remain. <em style={{ color: '#c9a84c' }}>Make them count.</em>
-          </p>
-        </div>
-      )}
+      <div
+        style={{
+          marginTop: '24px',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          minHeight: '72px',
+          justifyContent: 'center',
+          opacity: statsVisible ? 1 : 0,
+          transition: 'opacity 1.2s ease-in',
+        }}
+      >
+        <p style={{ fontSize: '15px', color: '#9a8f7a', lineHeight: 1.8, margin: 0 }}>
+          You have lived{' '}
+          <strong style={{ color: '#4a3f2f' }}>{monthsLived.toLocaleString()} months</strong> —{' '}
+          approximately{' '}
+          <strong style={{ color: '#4a3f2f' }}>{weeksLived.toLocaleString()} weeks</strong>.
+        </p>
+        <p style={{ fontSize: '15px', color: '#9a8f7a', lineHeight: 1.8, margin: 0 }}>
+          Approximately{' '}
+          <strong style={{ color: '#c9a84c' }}>
+            {(totalMonths - monthsLived).toLocaleString()} months
+          </strong>
+          , <strong style={{ color: '#c9a84c' }}>{weeksRemaining.toLocaleString()} weeks</strong>,
+          and{' '}
+          <strong style={{ color: '#c9a84c' }}>
+            {Math.round((totalMonths - monthsLived) / 12)} years
+          </strong>{' '}
+          remain. <em style={{ color: '#c9a84c' }}>Make them count.</em>
+        </p>
+      </div>
     </section>
   );
 }
