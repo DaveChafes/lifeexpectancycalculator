@@ -213,10 +213,21 @@ export default function Home() {
         if (!e) return;
         setIsStickyVisible(!e.isIntersecting);
       },
-      { threshold: 0 }
+      { threshold: 0, rootMargin: '0px 0px 0px 0px' }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // Fallback: scroll listener for mobile
+    const handleScroll = () => {
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setIsStickyVisible(rect.bottom < 0);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [step]);
 
   const handleSubmit = useCallback(
