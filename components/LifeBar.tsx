@@ -31,7 +31,7 @@ export default function LifeBar({
 
   const labelMuted: CSSProperties = {
     fontSize: '11px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
   };
 
   const rowStyle: CSSProperties = {
@@ -83,7 +83,7 @@ export default function LifeBar({
     marginTop: '8px',
     textAlign: 'center',
     fontSize: '11px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
   };
 
   return (

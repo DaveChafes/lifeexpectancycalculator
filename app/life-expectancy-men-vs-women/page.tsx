@@ -195,11 +195,11 @@ export default function LifeExpectancyMenVsWomenPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      <nav style={{ fontSize: 13, color: '#9a8f7a', marginBottom: 18 }}>
+      <nav style={{ fontSize: 13, color: '#6b5e4e', marginBottom: 18 }}>
         <Link href="/" style={{ color: '#c9a84c', textDecoration: 'none', fontWeight: 600 }}>
           Home
         </Link>{' '}
-        <span style={{ color: '#9a8f7a' }}>›</span> Life Expectancy Men vs Women
+        <span style={{ color: '#6b5e4e' }}>›</span> Life Expectancy Men vs Women
       </nav>
 
       <h1 style={H1_STYLE}>
@@ -228,7 +228,7 @@ export default function LifeExpectancyMenVsWomenPage() {
           }}
         >
           <div>
-            <div style={{ fontSize: 13, color: '#9a8f7a', fontWeight: 700, letterSpacing: '0.02em' }}>
+            <div style={{ fontSize: 13, color: '#6b5e4e', fontWeight: 700, letterSpacing: '0.02em' }}>
               US Male average life expectancy
             </div>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#1a1612', marginTop: 6 }}>
@@ -236,7 +236,7 @@ export default function LifeExpectancyMenVsWomenPage() {
             </div>
           </div>
           <div>
-            <div style={{ fontSize: 13, color: '#9a8f7a', fontWeight: 700, letterSpacing: '0.02em' }}>
+            <div style={{ fontSize: 13, color: '#6b5e4e', fontWeight: 700, letterSpacing: '0.02em' }}>
               US Female average life expectancy
             </div>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#1a1612', marginTop: 6 }}>
@@ -244,22 +244,22 @@ export default function LifeExpectancyMenVsWomenPage() {
             </div>
           </div>
           <div>
-            <div style={{ fontSize: 13, color: '#9a8f7a', fontWeight: 700, letterSpacing: '0.02em' }}>
+            <div style={{ fontSize: 13, color: '#6b5e4e', fontWeight: 700, letterSpacing: '0.02em' }}>
               Gap
             </div>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#1a1612', marginTop: 6 }}>
               5.4 years
             </div>
-            <div style={{ fontSize: 13, color: '#9a8f7a', marginTop: 2 }}>(approximately 281 weeks)</div>
+            <div style={{ fontSize: 13, color: '#6b5e4e', marginTop: 2 }}>(approximately 281 weeks)</div>
           </div>
           <div>
-            <div style={{ fontSize: 13, color: '#9a8f7a', fontWeight: 700, letterSpacing: '0.02em' }}>
+            <div style={{ fontSize: 13, color: '#6b5e4e', fontWeight: 700, letterSpacing: '0.02em' }}>
               Global average gap
             </div>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#1a1612', marginTop: 6 }}>
               ~5 years
             </div>
-            <div style={{ fontSize: 13, color: '#9a8f7a', marginTop: 2 }}>(WHO data)</div>
+            <div style={{ fontSize: 13, color: '#6b5e4e', marginTop: 2 }}>(WHO data)</div>
           </div>
         </div>
       </div>
@@ -337,7 +337,7 @@ export default function LifeExpectancyMenVsWomenPage() {
         <div style={{ fontSize: 16, fontWeight: 700, color: '#1a1612' }}>
           See your personal life expectancy estimate
         </div>
-        <div style={{ fontSize: 14, color: '#9a8f7a', lineHeight: 1.6 }}>
+        <div style={{ fontSize: 14, color: '#6b5e4e', lineHeight: 1.6 }}>
           Based on SSA &amp; CDC data. Takes 60 seconds.
         </div>
         <div style={{ marginTop: 6 }}>
@@ -382,7 +382,7 @@ export default function LifeExpectancyMenVsWomenPage() {
           </tbody>
         </table>
       </div>
-      <p style={{ ...P_STYLE, fontSize: 14, color: '#9a8f7a', marginTop: 12 }}>
+      <p style={{ ...P_STYLE, fontSize: 14, color: '#6b5e4e', marginTop: 12 }}>
         Note: Gap narrows significantly with age — men who reach 80 are nearly as likely as women to
         reach 90.
       </p>
@@ -461,7 +461,7 @@ export default function LifeExpectancyMenVsWomenPage() {
         .
       </p>
 
-      <p style={{ ...P_STYLE, fontSize: 14, color: '#9a8f7a', marginTop: 28, marginBottom: 0 }}>
+      <p style={{ ...P_STYLE, fontSize: 14, color: '#6b5e4e', marginTop: 28, marginBottom: 0 }}>
         For details on assumptions and modifiers, see{' '}
         <Link href="/methodology" style={{ color: '#c9a84c', textDecoration: 'none', fontWeight: 600 }}>
           how our calculator works

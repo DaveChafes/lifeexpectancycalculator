@@ -125,7 +125,7 @@ export default function ComparisonChart({
     margin: 0,
     marginTop: '6px',
     fontSize: '14px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
   };
 
   const peopleWord = sex === 'male' ? 'men' : 'women';
@@ -147,7 +147,7 @@ export default function ComparisonChart({
               domain={[60, 100]}
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#9a8f7a', fontSize: isMobile ? 11 : 12 }}
+              tick={{ fill: '#6b5e4e', fontSize: isMobile ? 11 : 12 }}
             />
             <YAxis
               type="category"

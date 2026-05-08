@@ -62,7 +62,7 @@ export default function AdUnit({
           ...wrapperStyle,
           border: '1px dashed #d4c9b0',
           background: '#fffdf7',
-          color: '#9a8f7a',
+          color: '#6b5e4e',
           fontSize: '14px',
           boxSizing: 'border-box',
         }}

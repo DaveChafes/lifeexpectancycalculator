@@ -249,11 +249,11 @@ export default function LifeExpectancyByStatePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      <nav style={{ fontSize: 13, color: '#9a8f7a', marginBottom: 18 }}>
+      <nav style={{ fontSize: 13, color: '#6b5e4e', marginBottom: 18 }}>
         <Link href="/" style={{ color: '#c9a84c', textDecoration: 'none', fontWeight: 600 }}>
           Home
         </Link>{' '}
-        <span style={{ color: '#9a8f7a' }}>›</span> Life Expectancy by State
+        <span style={{ color: '#6b5e4e' }}>›</span> Life Expectancy by State
       </nav>
 
       <h1 style={H1_STYLE}>Life Expectancy by State in the United States</h1>
@@ -271,7 +271,7 @@ export default function LifeExpectancyByStatePage() {
       </p>
 
       <h2 style={{ ...H2_STYLE, marginTop: 24 }}>Life Expectancy by State (Approx. 2021)</h2>
-      <p style={{ ...P_STYLE, fontSize: 14, color: '#9a8f7a', marginBottom: 16 }}>
+      <p style={{ ...P_STYLE, fontSize: 14, color: '#6b5e4e', marginBottom: 16 }}>
         Source: CDC National Center for Health Statistics (approximate 2021 figures). US average:
         {` ${US_AVG.toFixed(1)} years.`}
       </p>
@@ -398,7 +398,7 @@ export default function LifeExpectancyByStatePage() {
         <div style={{ fontSize: 16, fontWeight: 700, color: '#1a1612' }}>
           See your personal life expectancy estimate
         </div>
-        <div style={{ fontSize: 14, color: '#9a8f7a', lineHeight: 1.6 }}>
+        <div style={{ fontSize: 14, color: '#6b5e4e', lineHeight: 1.6 }}>
           Based on SSA &amp; CDC data. Takes 60 seconds.
         </div>
         <div style={{ marginTop: 6 }}>

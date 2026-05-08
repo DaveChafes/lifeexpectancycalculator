@@ -93,7 +93,7 @@ export default function AboutPage() {
         → Try the calculator
       </a>
 
-      <p style={{ fontSize: 13, color: '#9a8f7a', lineHeight: 1.8, marginTop: 12 }}>
+      <p style={{ fontSize: 13, color: '#6b5e4e', lineHeight: 1.8, marginTop: 12 }}>
         Data sources are listed on the Methodology page.
       </p>
 

@@ -76,7 +76,7 @@ export default function ShareCard(props: ShareCardProps) {
     fontSize: '11px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     margin: 0,
   };
 
@@ -107,14 +107,14 @@ export default function ShareCard(props: ShareCardProps) {
 
   const pctLineStyle: CSSProperties = {
     fontSize: '14px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     marginTop: '12px',
     marginBottom: 0,
   };
 
   const footerStyle: CSSProperties = {
     fontSize: '11px',
-    color: '#bfb49a',
+    color: '#7a6e5f',
     letterSpacing: '0.05em',
     margin: 0,
   };

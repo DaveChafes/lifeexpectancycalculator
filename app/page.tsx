@@ -363,7 +363,7 @@ export default function Home() {
             }}
           >
             <div className="calc-loading-spinner" aria-label="Loading" />
-            <div style={{ color: '#9a8f7a', fontSize: 14 }}>
+            <div style={{ color: '#6b5e4e', fontSize: 14 }}>
               Calculating your timeline...
             </div>
           </div>
@@ -849,7 +849,7 @@ export default function Home() {
             <p
               style={{
                 fontSize: '12px',
-                color: '#bfb49a',
+                color: '#7a6e5f',
                 textAlign: 'center',
                 marginTop: '40px',
                 lineHeight: 1.6,

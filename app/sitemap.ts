@@ -44,6 +44,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly' as const,
       priority: 0.8,
     },
+    {
+      url: 'https://whenwillidiecalculator.com/life-expectancy-by-country',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://whenwillidiecalculator.com/average-life-expectancy-usa',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://whenwillidiecalculator.com/how-to-live-longer',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ];
 }
 

@@ -40,7 +40,7 @@ const DEFAULT_MODIFIERS: LifestyleModifiers = {
   diet: 'average',
 };
 
-const ICON_COLOR = '#9a8f7a';
+const ICON_COLOR = '#6b5e4e';
 
 function weeksFromYears(years: number): number {
   return Math.round(years * 52);
@@ -109,7 +109,7 @@ function ToggleGroup<T extends string>({
           fontSize: '13px',
           border: sel ? '1px solid #c9a84c' : '1px solid #d4c9b0',
           backgroundColor: sel ? '#c9a84c' : 'transparent',
-          color: sel ? '#1a1200' : '#9a8f7a',
+          color: sel ? '#1a1200' : '#6b5e4e',
           fontWeight: sel ? 600 : 400,
           cursor: 'pointer',
           transition: 'all 0.15s ease',
@@ -195,7 +195,7 @@ function BmiSlider({
                   left: `${leftPct}%`,
                   transform: 'translateX(-50%)',
                   fontSize: '10px',
-                  color: '#9a8f7a',
+                  color: '#6b5e4e',
                   whiteSpace: 'nowrap',
                   textAlign: 'center',
                 }}
@@ -289,7 +289,7 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
 
   const subStyle: CSSProperties = {
     fontSize: '15px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     marginBottom: '40px',
     marginTop: 0,

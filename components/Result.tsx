@@ -112,7 +112,7 @@ export default function Result(props: ResultProps) {
     fontSize: '12px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     marginBottom: '8px',
   };
@@ -144,7 +144,7 @@ export default function Result(props: ResultProps) {
 
   const weeksLineStyle: CSSProperties = {
     fontSize: '18px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     marginTop: '8px',
     marginBottom: 0,
@@ -154,7 +154,7 @@ export default function Result(props: ResultProps) {
     fontSize: '12px',
     letterSpacing: '0.12em',
     fontVariant: 'small-caps',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     marginTop: '16px',
     marginBottom: '6px',
@@ -162,7 +162,7 @@ export default function Result(props: ResultProps) {
 
   const countdownLineStyle: CSSProperties = {
     fontSize: '14px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     margin: 0,
     lineHeight: 1.5,
@@ -180,7 +180,7 @@ export default function Result(props: ResultProps) {
     textAlign: 'center',
     marginTop: '28px',
     fontSize: '14px',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     cursor: 'pointer',
     background: 'none',
     border: 'none',

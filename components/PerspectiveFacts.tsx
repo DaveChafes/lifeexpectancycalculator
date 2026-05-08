@@ -55,7 +55,7 @@ function FactCard({ front, back }: FactCardProps) {
           <div
             style={{
               fontSize: '13px',
-              color: '#9a8f7a',
+              color: '#6b5e4e',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               marginBottom: '4px',
@@ -77,7 +77,7 @@ function FactCard({ front, back }: FactCardProps) {
           <div
             style={{
               fontSize: '11px',
-              color: '#bfb49a',
+              color: '#7a6e5f',
               marginTop: '8px',
             }}
           >
@@ -159,7 +159,7 @@ export default function PerspectiveFacts({
       <p
         style={{
           fontSize: '15px',
-          color: '#9a8f7a',
+          color: '#6b5e4e',
           textAlign: 'center',
           marginBottom: '32px',
         }}

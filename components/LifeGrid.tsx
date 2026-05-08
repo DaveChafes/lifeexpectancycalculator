@@ -302,7 +302,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
       <p
         style={{
           fontSize: '15px',
-          color: '#9a8f7a',
+          color: '#6b5e4e',
           textAlign: 'center',
           marginBottom: '24px',
           lineHeight: 1.6,
@@ -353,13 +353,13 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
           transition: 'opacity 1.2s ease-in',
         }}
       >
-        <p style={{ fontSize: '15px', color: '#9a8f7a', lineHeight: 1.8, margin: 0 }}>
+        <p style={{ fontSize: '15px', color: '#6b5e4e', lineHeight: 1.8, margin: 0 }}>
           You have lived{' '}
           <strong style={{ color: '#4a3f2f' }}>{monthsLived.toLocaleString()} months</strong> —{' '}
           approximately{' '}
           <strong style={{ color: '#4a3f2f' }}>{weeksLived.toLocaleString()} weeks</strong>.
         </p>
-        <p style={{ fontSize: '15px', color: '#9a8f7a', lineHeight: 1.8, margin: 0 }}>
+        <p style={{ fontSize: '15px', color: '#6b5e4e', lineHeight: 1.8, margin: 0 }}>
           Approximately{' '}
           <strong style={{ color: '#c9a84c' }}>
             {(totalMonths - monthsLived).toLocaleString()} months

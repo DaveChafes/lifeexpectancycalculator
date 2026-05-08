@@ -35,7 +35,7 @@ export default function PrivacyPage() {
         Privacy Policy
       </h1>
 
-      <p style={{ fontSize: 13, color: '#9a8f7a', lineHeight: 1.8, margin: '0 0 24px 0' }}>
+      <p style={{ fontSize: 13, color: '#6b5e4e', lineHeight: 1.8, margin: '0 0 24px 0' }}>
         Last updated: January 2025
       </p>
 

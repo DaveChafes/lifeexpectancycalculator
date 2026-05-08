@@ -35,7 +35,7 @@ const LEARN_MORE_LINKS_STYLE: React.CSSProperties = {
 };
 
 const LEARN_MORE_LINK_STYLE: React.CSSProperties = {
-  color: '#9a8f7a',
+  color: '#6b5e4e',
   textDecoration: 'none',
 };
 
@@ -49,7 +49,7 @@ const SITE_NAME_STYLE: React.CSSProperties = {
 
 const TAGLINE_STYLE: React.CSSProperties = {
   fontSize: '13px',
-  color: '#9a8f7a',
+  color: '#6b5e4e',
   fontStyle: 'italic',
   margin: 0,
 };
@@ -63,7 +63,7 @@ const NAV_STYLE: React.CSSProperties = {
 };
 
 const LINK_STYLE: React.CSSProperties = {
-  color: '#9a8f7a',
+  color: '#6b5e4e',
   textDecoration: 'none',
 };
 
@@ -77,14 +77,14 @@ const DIVIDER_STYLE: React.CSSProperties = {
 
 const MUTED_STYLE: React.CSSProperties = {
   fontSize: '12px',
-  color: '#bfb49a',
+  color: '#7a6e5f',
   margin: 0,
   lineHeight: 1.6,
 };
 
 const DATA_NOTE_STYLE: React.CSSProperties = {
   fontSize: '11px',
-  color: '#bfb49a',
+  color: '#7a6e5f',
   margin: 0,
   lineHeight: 1.6,
 };
@@ -122,6 +122,15 @@ export default function Footer() {
           </Link>
           <Link href="/life-expectancy-men-vs-women" style={LEARN_MORE_LINK_STYLE}>
             Life Expectancy: Men vs Women
+          </Link>
+          <Link href="/life-expectancy-by-country" style={LEARN_MORE_LINK_STYLE}>
+            Life Expectancy by Country
+          </Link>
+          <Link href="/average-life-expectancy-usa" style={LEARN_MORE_LINK_STYLE}>
+            Average Life Expectancy USA
+          </Link>
+          <Link href="/how-to-live-longer" style={LEARN_MORE_LINK_STYLE}>
+            How to Live Longer
           </Link>
         </div>
       </div>

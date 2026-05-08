@@ -57,7 +57,7 @@ function FactCard({ front, back }: FactCardProps) {
           <div
             style={{
               fontSize: '12px',
-              color: '#9a8f7a',
+              color: '#6b5e4e',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
             }}
@@ -78,7 +78,7 @@ function FactCard({ front, back }: FactCardProps) {
           <div
             style={{
               fontSize: '11px',
-              color: '#bfb49a',
+              color: '#7a6e5f',
               marginTop: '4px',
             }}
           >
@@ -400,7 +400,7 @@ export default function PerspectivePageClient() {
             border: 'none',
             cursor: 'pointer',
             fontSize: '14px',
-            color: '#9a8f7a',
+            color: '#6b5e4e',
             padding: 0,
             textDecoration: 'none',
             display: 'block',
@@ -425,7 +425,7 @@ export default function PerspectivePageClient() {
         <p
           style={{
             fontSize: '16px',
-            color: '#9a8f7a',
+            color: '#6b5e4e',
             textAlign: 'center',
             marginBottom: '16px',
             lineHeight: 1.7,
@@ -507,7 +507,7 @@ export default function PerspectivePageClient() {
         <p
           style={{
             fontSize: '12px',
-            color: '#bfb49a',
+            color: '#7a6e5f',
             textAlign: 'center',
             marginTop: '48px',
             lineHeight: 1.6,

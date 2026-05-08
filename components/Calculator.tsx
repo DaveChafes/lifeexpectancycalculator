@@ -76,7 +76,7 @@ function CustomSelect({
     backgroundColor: '#fffdf7',
     border: `1px solid ${isOpen ? '#c9a84c' : '#d4c9b0'}`,
     borderRadius: '8px',
-    color: showPlaceholder ? '#bfb49a' : '#1a1612',
+    color: showPlaceholder ? '#5a4e3f' : '#1a1612',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -130,7 +130,7 @@ function CustomSelect({
             transition: 'transform 0.2s ease',
           }}
         >
-          <path fill="#9a8f7a" d="M6 8L1 3h10z" />
+          <path fill="#6b5e4e" d="M6 8L1 3h10z" />
         </svg>
       </button>
       {isOpen ? (
@@ -207,7 +207,7 @@ const labelStyle: CSSProperties = {
   fontSize: '10px',
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  color: '#9a8f7a',
+  color: '#5a4e3f',
   fontWeight: 500,
   marginBottom: '6px',
   display: 'block',
@@ -296,14 +296,14 @@ export default function Calculator({ onSubmit }: CalculatorProps) {
 
   const subHeadStyle: CSSProperties = {
     fontSize: 'clamp(14px, 3.8vw, 16px)',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     margin: 0,
   };
 
   const dataLineStyle: CSSProperties = {
     fontSize: 'clamp(12px, 3.4vw, 13px)',
-    color: '#9a8f7a',
+    color: '#6b5e4e',
     textAlign: 'center',
     margin: 0,
   };
@@ -339,13 +339,13 @@ export default function Calculator({ onSubmit }: CalculatorProps) {
     transition: 'all 0.15s ease',
     border: '1px solid #d4c9b0',
     backgroundColor: '#fffdf7',
-    color: '#9a8f7a',
+    color: '#5a4e3f',
     fontWeight: 400,
   };
 
   const trustStyle: CSSProperties = {
     fontSize: '12px',
-    color: '#bfb49a',
+    color: '#7a6e5f',
     textAlign: 'center',
     margin: 0,
   };
