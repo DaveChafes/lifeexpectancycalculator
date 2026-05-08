@@ -8,5 +8,5 @@ All calculations are performed client-side. No personal data is collected.
 Data sources: SSA 2022 Period Life Table, CDC National Center for Health Statistics.
 
 ## /perspective
-A page of 20 personalized perspective facts based on the user's calculated remaining lifespan. Facts include weekends remaining, sunrises, meals with loved ones, books readable, albums discoverable, sporting events, and futuristic milestones. Each fact is a flippable card with a deeper insight on the back. Facts scale to the user's specific years remaining.
+A page of 33 personalized perspective facts based on the user's calculated remaining lifespan. Facts include weekends remaining, sunrises, meals with loved ones, books readable, albums discoverable, sporting events, and futuristic milestones. Each fact is a flippable card with a deeper insight on the back. Facts scale to the user's specific years remaining.
 

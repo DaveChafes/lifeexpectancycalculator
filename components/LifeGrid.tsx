@@ -113,14 +113,21 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     if (!el) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting && !hasStarted) {
+        const entry = entries[0];
+        if (!entry || hasStarted) return;
+
+        const ratioTrigger = entry.isIntersecting && entry.intersectionRatio >= 0.15;
+        const topTrigger =
+          entry.isIntersecting && entry.boundingClientRect.top <= window.innerHeight * 0.3;
+
+        if (ratioTrigger || topTrigger) {
           startTimeoutRef.current = setTimeout(() => {
             setHasStarted(true);
           }, 300);
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     );
     observer.observe(el);
     return () => {
