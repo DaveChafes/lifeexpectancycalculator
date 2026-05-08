@@ -3,13 +3,23 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Home, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const [homeHover, setHomeHover] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function update() {
+      setIsMobile(window.innerWidth < 640);
+    }
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   const navLinkStyle = (href: string) => ({
     fontSize: '13px',
@@ -111,7 +121,7 @@ export default function NavBar() {
         </div>
 
         {/* Mobile right controls: Home + hamburger */}
-        <div className="sm:hidden" style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{ alignItems: 'center', gap: 14, display: isMobile ? 'flex' : 'none' }}>
           <button
             type="button"
             aria-label="Home"
@@ -160,27 +170,25 @@ export default function NavBar() {
       </nav>
 
       {/* Overlay behind dropdown */}
-      {mobileMenuOpen && (
-        <button
-          type="button"
-          className="sm:hidden"
-          aria-label="Close menu overlay"
-          onClick={() => setMobileMenuOpen(false)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 30,
-            background: 'transparent',
-            border: 'none',
-            padding: 0,
-          }}
-        />
-      )}
+      <button
+        type="button"
+        aria-label="Close menu overlay"
+        onClick={() => setMobileMenuOpen(false)}
+        style={{
+          display: mobileMenuOpen ? 'block' : 'none',
+          position: 'fixed',
+          inset: 0,
+          zIndex: 30,
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+        }}
+      />
 
       {/* Mobile dropdown */}
       <div
-        className="sm:hidden"
         style={{
+          display: mobileMenuOpen ? 'block' : 'none',
           position: 'fixed',
           top: 56,
           left: 0,
