@@ -3,6 +3,8 @@ export const metadata = {
   description: 'Why I built this life expectancy calculator and what data it uses.',
 };
 
+import AdUnit from '@/components/AdUnit';
+
 export default function AboutPage() {
   return (
     <main
@@ -66,6 +68,10 @@ export default function AboutPage() {
       <p style={{ fontSize: 13, color: '#9a8f7a', lineHeight: 1.8, marginTop: 12 }}>
         Data sources are listed on the Methodology page.
       </p>
+
+      <div style={{ marginTop: '48px' }}>
+        <AdUnit slotId="slot-about-bottom" format="horizontal" />
+      </div>
     </main>
   );
 }

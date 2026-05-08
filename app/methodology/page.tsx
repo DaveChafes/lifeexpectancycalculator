@@ -4,6 +4,8 @@ export const metadata = {
     'How the Life Expectancy Calculator works — SSA actuarial data, lifestyle modifiers, and important limitations.',
 };
 
+import AdUnit from '@/components/AdUnit';
+
 export default function MethodologyPage() {
   return (
     <main
@@ -137,6 +139,10 @@ export default function MethodologyPage() {
           ))}
         </tbody>
       </table>
+
+      <div style={{ margin: '48px 0' }}>
+        <AdUnit slotId="slot-methodology-mid" format="rectangle" />
+      </div>
 
       <h2
         style={{
