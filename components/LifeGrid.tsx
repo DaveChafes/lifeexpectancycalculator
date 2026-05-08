@@ -7,29 +7,42 @@ export interface LifeGridProps {
   estimatedDeathAge: number;
 }
 
-function weeksSinceBirth(birthDate: string): number {
+function monthsSinceBirth(birthDate: string): number {
+  const birth = new Date(birthDate);
+  const now = new Date();
+  if (!Number.isFinite(birth.getTime())) return 0;
+  return (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+}
+
+function weeksAndMonthsFromBirth(birthDate: string): { weeks: number; months: number } {
   const t0 = new Date(birthDate).getTime();
-  if (!Number.isFinite(t0)) return 0;
   const weekMs = 7 * 24 * 60 * 60 * 1000;
-  return Math.max(0, Math.floor((Date.now() - t0) / weekMs));
+  const weeks = Number.isFinite(t0) ? Math.max(0, Math.floor((Date.now() - t0) / weekMs)) : 0;
+  const months = monthsSinceBirth(birthDate);
+  return { weeks, months };
 }
 
 export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const animFrameRef = useRef<number>(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const [weeksLivedDisplay, setWeeksLivedDisplay] = useState(0);
-  const [weeksRemainingDisplay, setWeeksRemainingDisplay] = useState(0);
+  const [statsVisible, setStatsVisible] = useState(false);
 
-  const COLS = 52;
-  const RADIUS = 5;
-  const GAP = 6;
+  const COLS = 12;
+  const RADIUS = 8;
+  const GAP = 7;
   const CELL = RADIUS * 2 + GAP;
 
-  const totalWeeks = Math.round(estimatedDeathAge * 52);
-  const ROWS = Math.ceil(totalWeeks / COLS);
-  const weeksLivedRaw = useMemo(() => weeksSinceBirth(birthDate), [birthDate]);
-  const weeksLived = Math.max(0, Math.min(weeksLivedRaw, totalWeeks));
+  const totalMonths = Math.max(0, Math.round(estimatedDeathAge * 12));
+  const ROWS = Math.ceil(totalMonths / COLS);
+
+  const { weeks: weeksLived, months: monthsLivedRaw } = useMemo(
+    () => weeksAndMonthsFromBirth(birthDate),
+    [birthDate]
+  );
+  const monthsLived = Math.max(0, Math.min(monthsLivedRaw, totalMonths));
+  const weeksRemaining = Math.max(0, Math.round((estimatedDeathAge - monthsLived / 12) * 52));
 
   const COLOR_LIVED = '#c9a84c';
   const COLOR_CURRENT = '#1a1612';
@@ -38,7 +51,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const canvasWidth = COLS * CELL;
   const canvasHeight = ROWS * CELL;
 
-  const getCircleCenter = useCallback(
+  const getCenter = useCallback(
     (index: number) => {
       const col = index % COLS;
       const row = Math.floor(index / COLS);
@@ -50,34 +63,42 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     [CELL, COLS, RADIUS]
   );
 
-  const drawCircle = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      index: number,
-      type: 'lived' | 'current' | 'remaining' | 'hidden',
-      scale = 1
-    ) => {
-      if (type === 'hidden') return;
-      const { x, y } = getCircleCenter(index);
+  const drawLivedCircle = useCallback(
+    (ctx: CanvasRenderingContext2D, index: number, scale = 1) => {
+      const { x, y } = getCenter(index);
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(scale, scale);
       ctx.beginPath();
       ctx.arc(0, 0, RADIUS, 0, Math.PI * 2);
-      if (type === 'lived') {
-        ctx.fillStyle = COLOR_LIVED;
-        ctx.fill();
-      } else if (type === 'current') {
-        ctx.fillStyle = COLOR_CURRENT;
-        ctx.fill();
-      } else if (type === 'remaining') {
-        ctx.strokeStyle = COLOR_REMAINING_STROKE;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
+      ctx.fillStyle = COLOR_LIVED;
+      ctx.fill();
       ctx.restore();
     },
-    [COLOR_CURRENT, COLOR_LIVED, COLOR_REMAINING_STROKE, RADIUS, getCircleCenter]
+    [COLOR_LIVED, RADIUS, getCenter]
+  );
+
+  const drawCurrentCircle = useCallback(
+    (ctx: CanvasRenderingContext2D, index: number) => {
+      const { x, y } = getCenter(index);
+      ctx.beginPath();
+      ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR_CURRENT;
+      ctx.fill();
+    },
+    [COLOR_CURRENT, RADIUS, getCenter]
+  );
+
+  const drawRemainingCircle = useCallback(
+    (ctx: CanvasRenderingContext2D, index: number) => {
+      const { x, y } = getCenter(index);
+      ctx.beginPath();
+      ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
+      ctx.strokeStyle = COLOR_REMAINING_STROKE;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    },
+    [COLOR_REMAINING_STROKE, RADIUS, getCenter]
   );
 
   useEffect(() => {
@@ -103,101 +124,6 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     canvas.height = canvasHeight;
   }, [canvasWidth, canvasHeight]);
 
-  const animateRemainingDissolve = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      const remainingIndices: number[] = [];
-      for (let i = weeksLived + 1; i < totalWeeks; i++) {
-        remainingIndices.push(i);
-      }
-      for (let i = remainingIndices.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [remainingIndices[i], remainingIndices[j]] = [remainingIndices[j], remainingIndices[i]];
-      }
-
-      const DISSOLVE_DURATION = 2000;
-      const startTime = performance.now();
-      const total = remainingIndices.length;
-      let lastReveal = 0;
-
-      function dissolveFrame(now: number) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / DISSOLVE_DURATION, 1);
-        const revealCount = Math.floor(progress * total);
-
-        for (let i = lastReveal; i < revealCount; i++) {
-          const idx = remainingIndices[i];
-          if (idx === undefined) continue;
-          drawCircle(ctx, idx, 'remaining');
-        }
-        lastReveal = revealCount;
-
-        if (progress < 1) {
-          requestAnimationFrame(dissolveFrame);
-        } else {
-          setWeeksRemainingDisplay(totalWeeks - weeksLived);
-        }
-      }
-
-      requestAnimationFrame(dissolveFrame);
-    },
-    [drawCircle, totalWeeks, weeksLived]
-  );
-
-  const animateCurrentCircle = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      const PULSE_DURATION = 2800;
-      const startTime = performance.now();
-      const { x, y } = getCircleCenter(weeksLived);
-
-      function pulseFrame(now: number) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / PULSE_DURATION, 1);
-
-        ctx.clearRect(x - RADIUS * 3, y - RADIUS * 3, RADIUS * 6, RADIUS * 6);
-
-        let scale: number;
-        if (progress < 0.3) {
-          scale = 1 + (progress / 0.3) * 2;
-        } else if (progress < 0.6) {
-          scale = 3 - ((progress - 0.3) / 0.3) * 2;
-        } else if (progress < 0.75) {
-          scale = 1 + ((progress - 0.6) / 0.15) * 0.3;
-        } else if (progress < 0.9) {
-          scale = 1.3 - ((progress - 0.75) / 0.15) * 0.3;
-        } else {
-          scale = 1;
-        }
-
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(scale, scale);
-        ctx.beginPath();
-        ctx.arc(0, 0, RADIUS, 0, Math.PI * 2);
-        ctx.fillStyle = COLOR_CURRENT;
-        ctx.fill();
-        ctx.restore();
-
-        if (progress < 1) {
-          requestAnimationFrame(pulseFrame);
-        } else {
-          drawCircle(ctx, weeksLived, 'current');
-          setWeeksLivedDisplay(weeksLived);
-          setTimeout(() => animateRemainingDissolve(ctx), 1200);
-        }
-      }
-
-      requestAnimationFrame(pulseFrame);
-    },
-    [
-      COLOR_CURRENT,
-      RADIUS,
-      animateRemainingDissolve,
-      drawCircle,
-      getCircleCenter,
-      weeksLived,
-    ]
-  );
-
   useEffect(() => {
     if (!hasStarted) return;
     const canvas = canvasRef.current;
@@ -207,46 +133,128 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     if (!ctx) return;
     const ctx2: CanvasRenderingContext2D = ctx;
 
-    const WAVE_DURATION = 5000;
+    setStatsVisible(false);
+
+    const WAVE_DURATION = 4000;
     const startTime = performance.now();
 
     function getWaveDelay(index: number): number {
       const col = index % COLS;
       const row = Math.floor(index / COLS);
-      const waveFactor = (col + row * 0.3) / (COLS + ROWS * 0.3);
-      return waveFactor * WAVE_DURATION * 0.8;
+      const waveFactor = (col * 0.5 + row) / (COLS * 0.5 + ROWS);
+      return waveFactor * WAVE_DURATION * 0.85;
     }
 
     function animate(now: number) {
       const elapsed = now - startTime;
       ctx2.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
-      let allLivedDone = true;
+      let allDone = true;
 
-      for (let i = 0; i < weeksLived; i++) {
+      for (let i = 0; i < monthsLived; i++) {
         const delay = getWaveDelay(i);
-        const progress = Math.max(0, Math.min(1, (elapsed - delay) / 300));
-
-        if (progress < 1) allLivedDone = false;
-
-        if (progress > 0) {
-          const scale =
-            progress < 0.5
-              ? progress * 2
-              : 1 + Math.sin((progress - 0.5) * Math.PI) * 0.15;
-          drawCircle(ctx2, i, 'lived', scale);
+        const p = Math.max(0, Math.min(1, (elapsed - delay) / 250));
+        if (p < 1) allDone = false;
+        if (p > 0) {
+          const scale = p < 0.6 ? p / 0.6 : 1 + Math.sin(((p - 0.6) / 0.4) * Math.PI) * 0.12;
+          drawLivedCircle(ctx2, i, scale);
         }
       }
 
-      if (!allLivedDone) {
-        requestAnimationFrame(animate);
+      if (!allDone) {
+        animFrameRef.current = requestAnimationFrame(animate);
       } else {
-        animateCurrentCircle(ctx2);
+        animFrameRef.current = requestAnimationFrame(() => animateCurrentCircle(ctx2));
       }
     }
 
-    requestAnimationFrame(animate);
-  }, [COLS, ROWS, animateCurrentCircle, drawCircle, hasStarted, weeksLived]);
+    function animateCurrentCircle(ctx3: CanvasRenderingContext2D) {
+      drawCurrentCircle(ctx3, monthsLived);
+
+      const { x, y } = getCenter(monthsLived);
+      const RIPPLE_DURATION = 1200;
+      const startTime2 = performance.now();
+
+      function rippleFrame(now: number) {
+        const elapsed = now - startTime2;
+        const p = Math.min(elapsed / RIPPLE_DURATION, 1);
+
+        drawCurrentCircle(ctx3, monthsLived);
+
+        const maxRadius = RADIUS * 4;
+        const rippleRadius = RADIUS + p * (maxRadius - RADIUS);
+        const opacity = 1 - p;
+
+        ctx3.save();
+        ctx3.beginPath();
+        ctx3.arc(x, y, rippleRadius, 0, Math.PI * 2);
+        ctx3.strokeStyle = `rgba(26, 22, 18, ${opacity * 0.4})`;
+        ctx3.lineWidth = 2 * (1 - p);
+        ctx3.stroke();
+        ctx3.restore();
+
+        if (p < 1) {
+          animFrameRef.current = requestAnimationFrame(rippleFrame);
+        } else {
+          drawCurrentCircle(ctx3, monthsLived);
+          setTimeout(() => animateRemainingDissolve(ctx3), 800);
+        }
+      }
+
+      animFrameRef.current = requestAnimationFrame(rippleFrame);
+    }
+
+    function animateRemainingDissolve(ctx3: CanvasRenderingContext2D) {
+      const remainingIndices: number[] = [];
+      for (let i = monthsLived + 1; i < totalMonths; i++) {
+        remainingIndices.push(i);
+      }
+      for (let i = remainingIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remainingIndices[i], remainingIndices[j]] = [remainingIndices[j], remainingIndices[i]];
+      }
+
+      const DISSOLVE_DURATION = 2500;
+      const startTime3 = performance.now();
+      const total = remainingIndices.length;
+      let lastRevealed = 0;
+
+      function dissolveFrame(now: number) {
+        const elapsed = now - startTime3;
+        const p = Math.min(elapsed / DISSOLVE_DURATION, 1);
+        const revealCount = Math.floor(p * total);
+
+        for (let i = lastRevealed; i < revealCount; i++) {
+          const idx = remainingIndices[i];
+          if (idx === undefined) continue;
+          drawRemainingCircle(ctx3, idx);
+        }
+        lastRevealed = revealCount;
+
+        if (p < 1) {
+          animFrameRef.current = requestAnimationFrame(dissolveFrame);
+        } else {
+          setStatsVisible(true);
+        }
+      }
+
+      animFrameRef.current = requestAnimationFrame(dissolveFrame);
+    }
+
+    animFrameRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animFrameRef.current);
+  }, [
+    COLS,
+    ROWS,
+    RADIUS,
+    monthsLived,
+    totalMonths,
+    hasStarted,
+    drawCurrentCircle,
+    drawLivedCircle,
+    drawRemainingCircle,
+    getCenter,
+  ]);
 
   return (
     <section style={{ width: '100%' }}>
@@ -260,7 +268,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
           marginBottom: '8px',
         }}
       >
-        Your Life in Weeks
+        Your Life in Months
       </h2>
       <p
         style={{
@@ -271,38 +279,48 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
           lineHeight: 1.6,
         }}
       >
-        Each circle is one week of your life. The golden ones are already gone. What will
-        you do with the rest?
+        Each circle is one month of your life. The golden ones are already gone. What will you do
+        with the rest?
       </p>
 
       <div
         ref={containerRef}
         style={{
           width: '100%',
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch',
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
         <canvas
           ref={canvasRef}
           width={canvasWidth}
           height={canvasHeight}
-          style={{ display: 'block', margin: '0 auto' }}
+          style={{ display: 'block' }}
         />
       </div>
 
-      {weeksLivedDisplay > 0 ? (
-        <p
+      {statsVisible ? (
+        <div
           style={{
-            fontSize: '14px',
-            color: '#9a8f7a',
+            marginTop: '24px',
             textAlign: 'center',
-            marginTop: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '6px',
           }}
         >
-          You have lived {weeksLivedDisplay.toLocaleString()} weeks. Approximately{' '}
-          {weeksRemainingDisplay.toLocaleString()} weeks remain.
-        </p>
+          <p style={{ fontSize: '14px', color: '#9a8f7a', margin: 0 }}>
+            You have lived{' '}
+            <strong style={{ color: '#4a3f2f' }}>{monthsLived.toLocaleString()} months</strong> —
+            approximately{' '}
+            <strong style={{ color: '#4a3f2f' }}>{weeksLived.toLocaleString()} weeks</strong>.
+          </p>
+          <p style={{ fontSize: '14px', color: '#9a8f7a', margin: 0 }}>
+            Approximately{' '}
+            <strong style={{ color: '#c9a84c' }}>{weeksRemaining.toLocaleString()} weeks</strong>{' '}
+            remain. Make them count.
+          </p>
+        </div>
       ) : null}
     </section>
   );
