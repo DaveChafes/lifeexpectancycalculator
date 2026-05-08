@@ -303,24 +303,28 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
         ref={containerRef}
         style={{
           width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden',
+          overflowX: 'auto',
         }}
       >
-        <canvas
-          ref={canvasRef}
-          width={canvasWidth}
-          height={canvasHeight}
+        <div
           style={{
-            display: 'block',
-            transformOrigin: 'top left',
-            transform: `scale(${scale})`,
-            width: canvasWidth,
-            height: canvasHeight,
-            marginBottom: `${canvasHeight * (scale - 1)}px`,
+            width: 'fit-content',
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'center',
           }}
-        />
+        >
+          <canvas
+            ref={canvasRef}
+            width={canvasWidth}
+            height={canvasHeight}
+            style={{
+              display: 'block',
+              width: Math.round(canvasWidth * scale),
+              height: Math.round(canvasHeight * scale),
+            }}
+          />
+        </div>
       </div>
 
       <div

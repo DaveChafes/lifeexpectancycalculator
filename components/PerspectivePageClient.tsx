@@ -105,9 +105,9 @@ function FactCard({ front, back }: FactCardProps) {
         >
           <div
             style={{
-              fontSize: '14px',
-              color: '#2a1f00',
-              lineHeight: 1.7,
+              fontSize: '16px',
+              color: '#f9fafb',
+              lineHeight: 1.75,
               fontStyle: 'italic',
             }}
           >
@@ -187,7 +187,7 @@ export default function PerspectivePageClient() {
             Quitting smoking cuts your risk of heart disease in half within just 1 year. Within 15
             years, your risk matches someone who never smoked.
           </div>
-          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '10px' }}>
             Source: CDC, Benefits of Quitting Smoking
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function PerspectivePageClient() {
             Just 150 minutes of moderate exercise per week — 22 minutes a day — reduces all-cause
             mortality risk by up to 31%. You don&apos;t need to run a marathon. You need to move.
           </div>
-          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '10px' }}>
             Source: American Heart Association, 2022
           </div>
         </div>
@@ -215,7 +215,7 @@ export default function PerspectivePageClient() {
             Sleeping under 6 hours per night is linked to a 13% higher mortality risk. Fixing your
             sleep costs nothing and starts working the first night.
           </div>
-          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '10px' }}>
             Source: Sleep Medicine Reviews, Cappuccio et al.
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function PerspectivePageClient() {
             Chronic loneliness carries a 26% increased risk of early death — roughly the same
             mortality impact as smoking 15 cigarettes a day.
           </div>
-          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '10px' }}>
             Source: Holt-Lunstad et al., Perspectives on Psychological Science, 2015
           </div>
         </div>
@@ -243,7 +243,7 @@ export default function PerspectivePageClient() {
             Switching to a Mediterranean diet is associated with up to 25% lower risk of
             cardiovascular death — no calorie counting, just different foods.
           </div>
-          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '10px' }}>
             Source: New England Journal of Medicine, PREDIMED Study
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function PerspectivePageClient() {
             equivalent of fraying the ends of your DNA. Meditation and social connection are the two
             best-studied reversals.
           </div>
-          <div style={{ fontSize: '12px', color: '#6b5d3a', opacity: 0.85, marginTop: '10px' }}>
+          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '10px' }}>
             Source: Blackburn &amp; Epel, The Telomere Effect
           </div>
         </div>

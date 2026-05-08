@@ -90,7 +90,6 @@ export default function HealthResource({
   const Icon = r.icon === 'heart' ? Heart : ExternalLink;
 
   const wrap: CSSProperties = {
-    maxWidth: 480,
     opacity: show ? 1 : 0,
     transition: 'opacity 200ms ease, max-height 200ms ease, margin-top 200ms ease',
     maxHeight: show ? 140 : 0,
@@ -137,7 +136,7 @@ export default function HealthResource({
   };
 
   return (
-    <div style={wrap} aria-hidden={!show}>
+    <div style={wrap} aria-hidden={!show} className="w-full sm:max-w-[480px]">
       <div style={card}>
         <div style={headline}>
           <Icon size={16} color="#f59e0b" aria-hidden />

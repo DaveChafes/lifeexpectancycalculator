@@ -494,6 +494,13 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
             flex-wrap: wrap;
             gap: 10px;
           }
+          .sliders-resource-row {
+            gap: 10px !important;
+          }
+          .sliders-resource-spacer,
+          .sliders-resource-right-spacer {
+            display: none !important;
+          }
           .sliders-label-col {
             width: 100px !important;
           }
@@ -559,12 +566,21 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                       paddingBottom: last ? 0 : 16,
                       ...rowOpacity(index),
                     }}
+                    className="sliders-resource-row"
                   >
-                    <div style={{ ...labelCol, opacity: 0 }} aria-hidden />
+                    <div
+                      style={{ ...labelCol, opacity: 0 }}
+                      aria-hidden
+                      className="sliders-resource-spacer"
+                    />
                     <div style={centerCol}>
                       <HealthResource kind={row.resource.kind} show={row.resource.show} />
                     </div>
-                    <div style={{ width: 100, flexShrink: 0 }} aria-hidden />
+                    <div
+                      style={{ width: 100, flexShrink: 0 }}
+                      aria-hidden
+                      className="sliders-resource-right-spacer"
+                    />
                   </div>
                 )}
               </div>
