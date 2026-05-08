@@ -26,6 +26,7 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number>(0);
+  const startTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const [scale, setScale] = useState(1);
   const [statsVisible, setStatsVisible] = useState(false);
@@ -113,14 +114,19 @@ export default function LifeGrid({ birthDate, estimatedDeathAge }: LifeGridProps
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting && !hasStarted) {
-          setHasStarted(true);
+          startTimeoutRef.current = setTimeout(() => {
+            setHasStarted(true);
+          }, 300);
           observer.disconnect();
         }
       },
       { threshold: 0.1 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (startTimeoutRef.current) clearTimeout(startTimeoutRef.current);
+    };
   }, [hasStarted]);
 
   useEffect(() => {

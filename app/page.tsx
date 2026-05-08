@@ -12,7 +12,7 @@ import {
   getPercentileVsPeers,
 } from '@/lib/calculator';
 import dynamic from 'next/dynamic';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const ComparisonChart = dynamic(() => import('@/components/ComparisonChart'), {
   ssr: false,
@@ -137,6 +137,34 @@ export default function Home() {
     { label: string; age: number; isUser: boolean }[]
   >([]);
   const [percentile, setPercentile] = useState<number>(0);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const stored = sessionStorage.getItem('lifeCalcResult');
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored) as {
+        birthDate?: string;
+        sex?: 'male' | 'female';
+        estimatedDeathAge?: number;
+      };
+      if (!parsed.birthDate || !parsed.sex) return;
+
+      setBirthDate(parsed.birthDate);
+      setSex(parsed.sex);
+
+      const result = getBaseLifeExpectancy(parsed.sex, parsed.birthDate);
+      setBaseResult(result);
+      setAdjustedDeathAge(parsed.estimatedDeathAge ?? result.estimatedDeathAge);
+      setComparisons(
+        getDemographicComparisons(result.estimatedDeathAge, parsed.sex, result.currentAge)
+      );
+      setPercentile(getPercentileVsPeers(result.estimatedDeathAge, parsed.sex, result.currentAge));
+      setStep('result');
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const handleSubmit = useCallback(
     (inputs: { birthDate: string; sex: 'male' | 'female' }) => {
