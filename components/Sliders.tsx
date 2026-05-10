@@ -18,6 +18,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
   type ReactNode,
@@ -167,6 +168,15 @@ function clampInt(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
 }
 
+function tryParseInRange(s: string, min: number, max: number): number | null {
+  const t = s.trim();
+  if (t === '') return null;
+  const n = Number.parseInt(t, 10);
+  if (Number.isNaN(n)) return null;
+  if (n < min || n > max) return null;
+  return n;
+}
+
 const BMI_MARKERS: { value: number; label: string }[] = [
   { value: 18.5, label: 'Underweight' },
   { value: 22, label: 'Healthy' },
@@ -279,11 +289,17 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
   const [modifiers, setModifiers] = useState<LifestyleModifiers>(DEFAULT_MODIFIERS);
   const [shownRows, setShownRows] = useState(0);
   const [bmiUnit, setBmiUnit] = useState<BmiUnit>('imperial');
-  const [impFt, setImpFt] = useState(5);
-  const [impIn, setImpIn] = useState(10);
-  const [impLbs, setImpLbs] = useState(154);
-  const [metCm, setMetCm] = useState(() => Math.round(70 * 2.54));
-  const [metKg, setMetKg] = useState(() => Math.round(154 * 0.45359237));
+  const [feetStr, setFeetStr] = useState('5');
+  const [inchesStr, setInchesStr] = useState('10');
+  const [lbsStr, setLbsStr] = useState('154');
+  const [cmStr, setCmStr] = useState('178');
+  const [kgStr, setKgStr] = useState('70');
+
+  const lastValidFeetStr = useRef('5');
+  const lastValidInchesStr = useRef('10');
+  const lastValidLbsStr = useRef('154');
+  const lastValidCmStr = useRef('178');
+  const lastValidKgStr = useRef('70');
 
   const defaultBreakdown = useMemo(
     () => applyLifestyleModifiers(baseDeathAge, DEFAULT_MODIFIERS).breakdown,
@@ -311,12 +327,32 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
   }, []);
 
   useEffect(() => {
-    const next =
-      bmiUnit === 'imperial'
-        ? bmiFromImperial(impFt, impIn, impLbs)
-        : bmiFromMetric(metCm, metKg);
-    setModifiers((m) => (Math.abs(m.bmi - next) < 0.0001 ? m : { ...m, bmi: next }));
-  }, [bmiUnit, impFt, impIn, impLbs, metCm, metKg]);
+    if (bmiUnit === 'imperial') {
+      const ft = tryParseInRange(feetStr, 4, 7);
+      const inch = tryParseInRange(inchesStr, 0, 11);
+      const lbs = tryParseInRange(lbsStr, 60, 500);
+      if (ft === null || inch === null || lbs === null) return;
+      const next = bmiFromImperial(ft, inch, lbs);
+      setModifiers((m) => {
+        if (Math.abs(m.bmi - next) < 0.0001) return m;
+        return { ...m, bmi: next };
+      });
+      lastValidFeetStr.current = String(ft);
+      lastValidInchesStr.current = String(inch);
+      lastValidLbsStr.current = String(lbs);
+    } else {
+      const cm = tryParseInRange(cmStr, 120, 220);
+      const kg = tryParseInRange(kgStr, 30, 250);
+      if (cm === null || kg === null) return;
+      const next = bmiFromMetric(cm, kg);
+      setModifiers((m) => {
+        if (Math.abs(m.bmi - next) < 0.0001) return m;
+        return { ...m, bmi: next };
+      });
+      lastValidCmStr.current = String(cm);
+      lastValidKgStr.current = String(kg);
+    }
+  }, [bmiUnit, feetStr, inchesStr, lbsStr, cmStr, kgStr]);
 
   function yearsDiffForFactor(factor: string, currentYears: number): boolean {
     const base = defaultBreakdown.find((b) => b.factor === factor)?.years ?? 0;
@@ -425,11 +461,30 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
     (next: BmiUnit) => {
       if (next === bmiUnit) return;
       if (next === 'metric') {
-        const totalIn = impFt * 12 + impIn;
-        setMetCm(Math.round(totalIn * 2.54));
-        setMetKg(Math.round(impLbs * 0.45359237));
+        const ft =
+          tryParseInRange(feetStr, 4, 7) ??
+          Number.parseInt(lastValidFeetStr.current, 10);
+        const inch =
+          tryParseInRange(inchesStr, 0, 11) ??
+          Number.parseInt(lastValidInchesStr.current, 10);
+        const lbs =
+          tryParseInRange(lbsStr, 60, 500) ??
+          Number.parseInt(lastValidLbsStr.current, 10);
+        const totalIn = ft * 12 + inch;
+        const cm = Math.round(totalIn * 2.54);
+        const kg = Math.round(lbs * 0.45359237);
+        setCmStr(String(cm));
+        setKgStr(String(kg));
+        lastValidCmStr.current = String(cm);
+        lastValidKgStr.current = String(kg);
       } else {
-        const totalIn = metCm / 2.54;
+        const cm =
+          tryParseInRange(cmStr, 120, 220) ??
+          Number.parseInt(lastValidCmStr.current, 10);
+        const kg =
+          tryParseInRange(kgStr, 30, 250) ??
+          Number.parseInt(lastValidKgStr.current, 10);
+        const totalIn = cm / 2.54;
         let ft = Math.floor(totalIn / 12);
         let inch = Math.round(totalIn - ft * 12);
         while (inch >= 12) {
@@ -440,13 +495,19 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           ft -= 1;
           inch += 12;
         }
-        setImpFt(clampInt(ft, 4, 7));
-        setImpIn(clampInt(inch, 0, 11));
-        setImpLbs(clampInt(Math.round(metKg / 0.45359237), 60, 500));
+        const cFt = clampInt(ft, 4, 7);
+        const cIn = clampInt(inch, 0, 11);
+        const cLbs = clampInt(Math.round(kg / 0.45359237), 60, 500);
+        setFeetStr(String(cFt));
+        setInchesStr(String(cIn));
+        setLbsStr(String(cLbs));
+        lastValidFeetStr.current = String(cFt);
+        lastValidInchesStr.current = String(cIn);
+        lastValidLbsStr.current = String(cLbs);
       }
       setBmiUnit(next);
     },
-    [bmiUnit, impFt, impIn, impLbs, metCm, metKg]
+    [bmiUnit, feetStr, inchesStr, lbsStr, cmStr, kgStr]
   );
 
   const bmiCat = categoryForBmi(modifiers.bmi);
@@ -534,10 +595,23 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                     max={7}
                     className="bmi-num-input"
                     style={{ ...BMI_INPUT_BASE, width: 56 }}
-                    value={impFt}
-                    onChange={(e) => {
-                      const v = Number.parseInt(e.target.value, 10);
-                      setImpFt(clampInt(Number.isNaN(v) ? 4 : v, 4, 7));
+                    value={feetStr}
+                    onChange={(e) => setFeetStr(e.target.value)}
+                    onBlur={() => {
+                      const t = feetStr.trim();
+                      if (t === '') {
+                        setFeetStr(lastValidFeetStr.current);
+                        return;
+                      }
+                      const n = Number.parseInt(t, 10);
+                      if (Number.isNaN(n)) {
+                        setFeetStr(lastValidFeetStr.current);
+                        return;
+                      }
+                      const c = clampInt(n, 4, 7);
+                      const s = String(c);
+                      setFeetStr(s);
+                      lastValidFeetStr.current = s;
                     }}
                   />
                   <span style={{ fontSize: 12, color: '#6b5e4e' }}>ft</span>
@@ -547,10 +621,23 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                     max={11}
                     className="bmi-num-input"
                     style={{ ...BMI_INPUT_BASE, width: 56 }}
-                    value={impIn}
-                    onChange={(e) => {
-                      const v = Number.parseInt(e.target.value, 10);
-                      setImpIn(clampInt(Number.isNaN(v) ? 0 : v, 0, 11));
+                    value={inchesStr}
+                    onChange={(e) => setInchesStr(e.target.value)}
+                    onBlur={() => {
+                      const t = inchesStr.trim();
+                      if (t === '') {
+                        setInchesStr(lastValidInchesStr.current);
+                        return;
+                      }
+                      const n = Number.parseInt(t, 10);
+                      if (Number.isNaN(n)) {
+                        setInchesStr(lastValidInchesStr.current);
+                        return;
+                      }
+                      const c = clampInt(n, 0, 11);
+                      const s = String(c);
+                      setInchesStr(s);
+                      lastValidInchesStr.current = s;
                     }}
                   />
                   <span style={{ fontSize: 12, color: '#6b5e4e' }}>in</span>
@@ -571,10 +658,23 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                     max={500}
                     className="bmi-num-input"
                     style={{ ...BMI_INPUT_BASE, width: 72 }}
-                    value={impLbs}
-                    onChange={(e) => {
-                      const v = Number.parseInt(e.target.value, 10);
-                      setImpLbs(clampInt(Number.isNaN(v) ? 60 : v, 60, 500));
+                    value={lbsStr}
+                    onChange={(e) => setLbsStr(e.target.value)}
+                    onBlur={() => {
+                      const t = lbsStr.trim();
+                      if (t === '') {
+                        setLbsStr(lastValidLbsStr.current);
+                        return;
+                      }
+                      const n = Number.parseInt(t, 10);
+                      if (Number.isNaN(n)) {
+                        setLbsStr(lastValidLbsStr.current);
+                        return;
+                      }
+                      const c = clampInt(n, 60, 500);
+                      const s = String(c);
+                      setLbsStr(s);
+                      lastValidLbsStr.current = s;
                     }}
                   />
                   <span style={{ fontSize: 12, color: '#6b5e4e' }}>lbs</span>
@@ -598,10 +698,23 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                     max={220}
                     className="bmi-num-input"
                     style={{ ...BMI_INPUT_BASE, width: 72 }}
-                    value={metCm}
-                    onChange={(e) => {
-                      const v = Number.parseInt(e.target.value, 10);
-                      setMetCm(clampInt(Number.isNaN(v) ? 120 : v, 120, 220));
+                    value={cmStr}
+                    onChange={(e) => setCmStr(e.target.value)}
+                    onBlur={() => {
+                      const t = cmStr.trim();
+                      if (t === '') {
+                        setCmStr(lastValidCmStr.current);
+                        return;
+                      }
+                      const n = Number.parseInt(t, 10);
+                      if (Number.isNaN(n)) {
+                        setCmStr(lastValidCmStr.current);
+                        return;
+                      }
+                      const c = clampInt(n, 120, 220);
+                      const s = String(c);
+                      setCmStr(s);
+                      lastValidCmStr.current = s;
                     }}
                   />
                   <span style={{ fontSize: 12, color: '#6b5e4e' }}>cm</span>
@@ -622,10 +735,23 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
                     max={250}
                     className="bmi-num-input"
                     style={{ ...BMI_INPUT_BASE, width: 72 }}
-                    value={metKg}
-                    onChange={(e) => {
-                      const v = Number.parseInt(e.target.value, 10);
-                      setMetKg(clampInt(Number.isNaN(v) ? 30 : v, 30, 250));
+                    value={kgStr}
+                    onChange={(e) => setKgStr(e.target.value)}
+                    onBlur={() => {
+                      const t = kgStr.trim();
+                      if (t === '') {
+                        setKgStr(lastValidKgStr.current);
+                        return;
+                      }
+                      const n = Number.parseInt(t, 10);
+                      if (Number.isNaN(n)) {
+                        setKgStr(lastValidKgStr.current);
+                        return;
+                      }
+                      const c = clampInt(n, 30, 250);
+                      const s = String(c);
+                      setKgStr(s);
+                      lastValidKgStr.current = s;
                     }}
                   />
                   <span style={{ fontSize: 12, color: '#6b5e4e' }}>kg</span>
