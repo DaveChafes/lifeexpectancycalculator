@@ -153,6 +153,21 @@ export default function Footer() {
           <Link href="/exercise-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
             Exercise and Life Expectancy
           </Link>
+          <Link href="/sleep-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            Sleep and Life Expectancy
+          </Link>
+          <Link href="/stress-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            Stress and Life Expectancy
+          </Link>
+          <Link href="/alcohol-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            Alcohol and Life Expectancy
+          </Link>
+          <Link href="/diet-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            Diet and Life Expectancy
+          </Link>
+          <Link href="/longevity-calculator" style={LEARN_MORE_LINK_STYLE}>
+            Longevity Calculator
+          </Link>
         </div>
       </div>
 
