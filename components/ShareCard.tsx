@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { openResultShareOnTwitter } from '@/lib/shareResultTwitter';
 
 export interface ShareCardProps {
   estimatedDeathAge: number;
@@ -30,14 +31,8 @@ export default function ShareCard(props: ShareCardProps) {
   const clampedPct = Math.min(100, Math.max(0, Math.round(percentileVsPeers)));
   const peopleWord = sex === 'male' ? 'men' : 'women';
 
-  const tweetText = `I'm estimated to live until ${estimatedDeathYear}. That's ${weeksRemaining.toLocaleString()} weeks — and I'm not wasting them. Calculate yours → whenwillidiecalculator.com #lifeexpectancy #makeitcount`;
-
   function shareTwitter() {
-    window.open(
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
+    openResultShareOnTwitter(estimatedDeathYear, weeksRemaining);
   }
 
   function shareFacebook() {

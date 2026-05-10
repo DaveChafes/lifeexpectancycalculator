@@ -5,6 +5,7 @@ import Calculator from '@/components/Calculator';
 import PerspectiveFacts from '@/components/PerspectiveFacts';
 import Result from '@/components/Result';
 import ShareCard from '@/components/ShareCard';
+import WhatNowCTA from '@/components/WhatNowCTA';
 import Sliders from '@/components/Sliders';
 import {
   getBaseLifeExpectancy,
@@ -465,6 +466,13 @@ export default function Home() {
               sex={sex}
               currentAge={baseResult.currentAge}
               weeksRemaining={baseResult.weeksRemaining}
+            />
+          </section>
+
+          <section>
+            <WhatNowCTA
+              weeksRemaining={baseResult.weeksRemaining}
+              estimatedDeathYear={baseResult.estimatedDeathYear}
             />
           </section>
 
