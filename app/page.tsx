@@ -452,6 +452,13 @@ export default function Home() {
           </section>
 
           <section>
+            <WhatNowCTA
+              weeksRemaining={baseResult.weeksRemaining}
+              estimatedDeathYear={baseResult.estimatedDeathYear}
+            />
+          </section>
+
+          <section>
             <PerspectiveFacts
               yearsRemaining={baseResult.yearsRemaining}
               weeksRemaining={baseResult.weeksRemaining}
@@ -466,13 +473,6 @@ export default function Home() {
               sex={sex}
               currentAge={baseResult.currentAge}
               weeksRemaining={baseResult.weeksRemaining}
-            />
-          </section>
-
-          <section>
-            <WhatNowCTA
-              weeksRemaining={baseResult.weeksRemaining}
-              estimatedDeathYear={baseResult.estimatedDeathYear}
             />
           </section>
 
