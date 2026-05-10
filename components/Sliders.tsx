@@ -21,6 +21,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react';
+import Link from 'next/link';
 
 export interface SlidersProps {
   baseDeathAge: number;
@@ -529,6 +530,28 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
 
       <section style={{ width: '100%' }}>
         <h2 style={headerStyle}>See how your choices protect your time</h2>
+        <p
+          style={{
+            fontSize: 13,
+            color: '#6b5e4e',
+            textAlign: 'center',
+            marginTop: 0,
+            marginBottom: 16,
+            lineHeight: 1.6,
+          }}
+        >
+          Modifier values based on peer-reviewed longitudinal research.{' '}
+          <Link
+            href="/methodology"
+            style={{
+              color: '#c9a84c',
+              textDecoration: 'none',
+              fontWeight: 600,
+            }}
+          >
+            See our methodology →
+          </Link>
+        </p>
         <p style={subStyle}>
           Every change updates your estimated lifespan in real time.
         </p>

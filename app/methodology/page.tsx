@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 export const metadata = {
   title: 'Methodology',
   description:
@@ -14,6 +16,78 @@ export const metadata = {
 };
 
 import AdUnit from '@/components/AdUnit';
+
+const MODIFIER_SOURCE_STYLE = {
+  fontSize: 13,
+  color: '#6b5e4e',
+  lineHeight: 1.55,
+} as const;
+
+const MODIFIER_TABLE_BLOCKS: {
+  rows: [string, string, string][];
+  citation: string;
+}[] = [
+  {
+    rows: [
+      ['Smoking', 'None', '0'],
+      ['Smoking', 'Occasional', '-3 years'],
+      ['Smoking', 'Daily', '-10 years'],
+    ],
+    citation:
+      'Smoking −10 years: Doll R et al., BMJ 2004 (British Doctors Study — 50-year follow-up).',
+  },
+  {
+    rows: [
+      ['Exercise', 'Sedentary', '-3 years'],
+      ['Exercise', 'Light', '0'],
+      ['Exercise', 'Active', '+2 years'],
+      ['Exercise', 'Very Active', '+3 years'],
+    ],
+    citation: 'Exercise +2–3 years: Moore SC et al., PLOS Medicine 2012.',
+  },
+  {
+    rows: [
+      ['BMI', 'Healthy (18.5-24.9)', '0'],
+      ['BMI', 'Underweight (<18.5)', '-2 years'],
+      ['BMI', 'Overweight (25-29.9)', '-1 year'],
+      ['BMI', 'Obese (30-34.9)', '-3 years'],
+      ['BMI', 'Severely Obese (35+)', '-7 years'],
+    ],
+    citation: 'BMI: Global BMI Mortality Collaboration, Lancet 2016.',
+  },
+  {
+    rows: [
+      ['Alcohol', 'None or Light', '0'],
+      ['Alcohol', 'Moderate', '-1 year'],
+      ['Alcohol', 'Heavy', '-5 years'],
+    ],
+    citation: 'Alcohol: GBD 2016 Alcohol Collaborators, Lancet 2018.',
+  },
+  {
+    rows: [
+      ['Sleep', 'Under 6hrs', '-3 years'],
+      ['Sleep', '6-8hrs', '0'],
+      ['Sleep', '8+hrs', '+1 year'],
+    ],
+    citation: 'Sleep: Cappuccini et al., Sleep 2010 meta-analysis.',
+  },
+  {
+    rows: [
+      ['Stress', 'Low', '+1 year'],
+      ['Stress', 'Medium', '0'],
+      ['Stress', 'High', '-3 years'],
+    ],
+    citation: 'Stress: Kivimäki et al., BMJ 2012 (Whitehall II study).',
+  },
+  {
+    rows: [
+      ['Diet', 'Poor', '-3 years'],
+      ['Diet', 'Average', '0'],
+      ['Diet', 'Good', '+2 years'],
+    ],
+    citation: 'Diet: Sofi F et al., BMJ 2008 (Mediterranean diet meta-analysis).',
+  },
+];
 
 export default function MethodologyPage() {
   return (
@@ -132,38 +206,42 @@ export default function MethodologyPage() {
           </tr>
         </thead>
         <tbody>
-          {[
-            ['Smoking', 'None', '0'],
-            ['Smoking', 'Occasional', '-3 years'],
-            ['Smoking', 'Daily', '-10 years'],
-            ['BMI', 'Healthy (18.5-24.9)', '0'],
-            ['BMI', 'Underweight (<18.5)', '-2 years'],
-            ['BMI', 'Overweight (25-29.9)', '-1 year'],
-            ['BMI', 'Obese (30-34.9)', '-3 years'],
-            ['BMI', 'Severely Obese (35+)', '-7 years'],
-            ['Exercise', 'Sedentary', '-3 years'],
-            ['Exercise', 'Light', '0'],
-            ['Exercise', 'Active', '+2 years'],
-            ['Exercise', 'Very Active', '+3 years'],
-            ['Alcohol', 'None or Light', '0'],
-            ['Alcohol', 'Moderate', '-1 year'],
-            ['Alcohol', 'Heavy', '-5 years'],
-            ['Sleep', 'Under 6hrs', '-3 years'],
-            ['Sleep', '6-8hrs', '0'],
-            ['Sleep', '8+hrs', '+1 year'],
-            ['Stress', 'Low', '+1 year'],
-            ['Stress', 'Medium', '0'],
-            ['Stress', 'High', '-3 years'],
-            ['Diet', 'Poor', '-3 years'],
-            ['Diet', 'Average', '0'],
-            ['Diet', 'Good', '+2 years'],
-          ].map(([factor, option, years], idx) => (
-            <tr key={`${factor}-${option}`} style={{ background: idx % 2 === 0 ? '#fffdf7' : '#f7f2e8' }}>
-              <td style={{ padding: '10px 16px', border: '1px solid #e8dfc8' }}>{factor}</td>
-              <td style={{ padding: '10px 16px', border: '1px solid #e8dfc8' }}>{option}</td>
-              <td style={{ padding: '10px 16px', border: '1px solid #e8dfc8' }}>{years}</td>
-            </tr>
-          ))}
+          {(() => {
+            let dataRowIndex = 0;
+            return MODIFIER_TABLE_BLOCKS.flatMap((block) => {
+              const out: ReactNode[] = [];
+              for (const [factor, option, years] of block.rows) {
+                const idx = dataRowIndex;
+                dataRowIndex += 1;
+                out.push(
+                  <tr
+                    key={`${factor}-${option}`}
+                    style={{ background: idx % 2 === 0 ? '#fffdf7' : '#f7f2e8' }}
+                  >
+                    <td style={{ padding: '10px 16px', border: '1px solid #e8dfc8' }}>{factor}</td>
+                    <td style={{ padding: '10px 16px', border: '1px solid #e8dfc8' }}>{option}</td>
+                    <td style={{ padding: '10px 16px', border: '1px solid #e8dfc8' }}>{years}</td>
+                  </tr>
+                );
+              }
+              out.push(
+                <tr key={`${block.rows[0]?.[0] ?? 'block'}-source`}>
+                  <td
+                    colSpan={3}
+                    style={{
+                      padding: '10px 16px',
+                      border: '1px solid #e8dfc8',
+                      background: '#f7f2e8',
+                      ...MODIFIER_SOURCE_STYLE,
+                    }}
+                  >
+                    <span style={{ fontWeight: 600 }}>Primary source.</span> {block.citation}
+                  </td>
+                </tr>
+              );
+              return out;
+            });
+          })()}
         </tbody>
       </table>
 
