@@ -141,6 +141,9 @@ export default function Footer() {
           <Link href="/life-expectancy-with-diabetes" style={LEARN_MORE_LINK_STYLE}>
             Life Expectancy with Diabetes
           </Link>
+          <Link href="/bmi-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            BMI and Life Expectancy
+          </Link>
           <Link href="/how-to-live-longer" style={LEARN_MORE_LINK_STYLE}>
             How to Live Longer
           </Link>
