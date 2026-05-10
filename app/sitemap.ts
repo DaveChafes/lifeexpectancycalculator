@@ -39,6 +39,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: 'https://whenwillidiecalculator.com/life-expectancy-by-race',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: 'https://whenwillidiecalculator.com/life-expectancy-men-vs-women',
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
@@ -88,6 +94,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: 'https://whenwillidiecalculator.com/bmi-life-expectancy',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://whenwillidiecalculator.com/exercise-and-life-expectancy',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,

@@ -120,6 +120,9 @@ export default function Footer() {
           <Link href="/life-expectancy-by-state" style={LEARN_MORE_LINK_STYLE}>
             Life Expectancy by State
           </Link>
+          <Link href="/life-expectancy-by-race" style={LEARN_MORE_LINK_STYLE}>
+            Life Expectancy by Race
+          </Link>
           <Link href="/life-expectancy-men-vs-women" style={LEARN_MORE_LINK_STYLE}>
             Life Expectancy: Men vs Women
           </Link>
@@ -146,6 +149,9 @@ export default function Footer() {
           </Link>
           <Link href="/how-to-live-longer" style={LEARN_MORE_LINK_STYLE}>
             How to Live Longer
+          </Link>
+          <Link href="/exercise-and-life-expectancy" style={LEARN_MORE_LINK_STYLE}>
+            Exercise and Life Expectancy
           </Link>
         </div>
       </div>
