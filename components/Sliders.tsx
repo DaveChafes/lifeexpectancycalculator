@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import HealthResource, { type HealthResourceKind } from '@/components/HealthResource';
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -131,6 +132,41 @@ function ToggleGroup<T extends string>({
   );
 }
 
+type BmiUnit = 'imperial' | 'metric';
+
+function clampBmi(n: number): number {
+  return Math.min(45, Math.max(15, n));
+}
+
+function roundBmi1(n: number): number {
+  return Math.round(n * 10) / 10;
+}
+
+function bmiFromImperial(ft: number, inches: number, lbs: number): number {
+  const totalIn = ft * 12 + inches;
+  if (totalIn <= 0) return 22;
+  return clampBmi(roundBmi1((lbs * 703) / (totalIn * totalIn)));
+}
+
+function bmiFromMetric(cm: number, kg: number): number {
+  const m = cm / 100;
+  if (m <= 0) return 22;
+  return clampBmi(roundBmi1(kg / (m * m)));
+}
+
+function categoryForBmi(bmi: number): { label: string; color: string } {
+  if (bmi < 18.5) return { label: 'Underweight', color: '#7a5c1a' };
+  if (bmi < 25) return { label: 'Healthy weight', color: '#1a5c2a' };
+  if (bmi < 30) return { label: 'Overweight', color: '#7a4e1a' };
+  if (bmi < 35) return { label: 'Obese (Class I)', color: '#7a1a1a' };
+  if (bmi < 40) return { label: 'Obese (Class II)', color: '#7a1a1a' };
+  return { label: 'Obese (Class III)', color: '#7a1a1a' };
+}
+
+function clampInt(n: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, n));
+}
+
 const BMI_MARKERS: { value: number; label: string }[] = [
   { value: 18.5, label: 'Underweight' },
   { value: 22, label: 'Healthy' },
@@ -211,9 +247,43 @@ function BmiSlider({
   );
 }
 
+const BMI_INPUT_BASE: CSSProperties = {
+  height: 36,
+  border: '1px solid #d4c9b0',
+  borderRadius: 8,
+  fontSize: 14,
+  color: '#4a3f2f',
+  background: '#fffdf7',
+  padding: '0 10px',
+  fontFamily: 'inherit',
+  boxSizing: 'border-box',
+};
+
+function unitPillStyle(selected: boolean): CSSProperties {
+  return {
+    height: '34px',
+    padding: '0 14px',
+    borderRadius: '999px',
+    fontSize: '13px',
+    border: selected ? '1px solid #c9a84c' : '1px solid #d4c9b0',
+    backgroundColor: selected ? '#c9a84c' : 'transparent',
+    color: selected ? '#1a1200' : '#6b5e4e',
+    fontWeight: selected ? 600 : 400,
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    fontFamily: 'inherit',
+  };
+}
+
 export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProps) {
   const [modifiers, setModifiers] = useState<LifestyleModifiers>(DEFAULT_MODIFIERS);
   const [shownRows, setShownRows] = useState(0);
+  const [bmiUnit, setBmiUnit] = useState<BmiUnit>('imperial');
+  const [impFt, setImpFt] = useState(5);
+  const [impIn, setImpIn] = useState(10);
+  const [impLbs, setImpLbs] = useState(154);
+  const [metCm, setMetCm] = useState(() => Math.round(70 * 2.54));
+  const [metKg, setMetKg] = useState(() => Math.round(154 * 0.45359237));
 
   const defaultBreakdown = useMemo(
     () => applyLifestyleModifiers(baseDeathAge, DEFAULT_MODIFIERS).breakdown,
@@ -236,9 +306,17 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
     return () => ids.forEach(clearTimeout);
   }, []);
 
-  function patch(p: Partial<LifestyleModifiers>) {
+  const patch = useCallback((p: Partial<LifestyleModifiers>) => {
     setModifiers((m) => ({ ...m, ...p }));
-  }
+  }, []);
+
+  useEffect(() => {
+    const next =
+      bmiUnit === 'imperial'
+        ? bmiFromImperial(impFt, impIn, impLbs)
+        : bmiFromMetric(metCm, metKg);
+    setModifiers((m) => (Math.abs(m.bmi - next) < 0.0001 ? m : { ...m, bmi: next }));
+  }, [bmiUnit, impFt, impIn, impLbs, metCm, metKg]);
 
   function yearsDiffForFactor(factor: string, currentYears: number): boolean {
     const base = defaultBreakdown.find((b) => b.factor === factor)?.years ?? 0;
@@ -343,6 +421,36 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
     { value: 'good' as const, label: 'Good' },
   ];
 
+  const handleBmiUnitChange = useCallback(
+    (next: BmiUnit) => {
+      if (next === bmiUnit) return;
+      if (next === 'metric') {
+        const totalIn = impFt * 12 + impIn;
+        setMetCm(Math.round(totalIn * 2.54));
+        setMetKg(Math.round(impLbs * 0.45359237));
+      } else {
+        const totalIn = metCm / 2.54;
+        let ft = Math.floor(totalIn / 12);
+        let inch = Math.round(totalIn - ft * 12);
+        while (inch >= 12) {
+          ft += 1;
+          inch -= 12;
+        }
+        while (inch < 0 && ft > 0) {
+          ft -= 1;
+          inch += 12;
+        }
+        setImpFt(clampInt(ft, 4, 7));
+        setImpIn(clampInt(inch, 0, 11));
+        setImpLbs(clampInt(Math.round(metKg / 0.45359237), 60, 500));
+      }
+      setBmiUnit(next);
+    },
+    [bmiUnit, impFt, impIn, impLbs, metCm, metKg]
+  );
+
+  const bmiCat = categoryForBmi(modifiers.bmi);
+
   const rows: {
     icon: ReactNode;
     label: string;
@@ -371,7 +479,168 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
       label: 'BMI',
       factor: 'BMI',
       center: (
-        <BmiSlider value={modifiers.bmi} onChange={(v) => patch({ bmi: v })} />
+        <div style={{ width: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              width: '100%',
+              marginBottom: 8,
+            }}
+          >
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
+              <button
+                type="button"
+                style={unitPillStyle(bmiUnit === 'imperial')}
+                onClick={() => handleBmiUnitChange('imperial')}
+              >
+                Imperial
+              </button>
+              <button
+                type="button"
+                style={unitPillStyle(bmiUnit === 'metric')}
+                onClick={() => handleBmiUnitChange('metric')}
+              >
+                Metric
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="bmi-hw-row"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 16,
+              marginBottom: 8,
+              alignItems: 'flex-end',
+            }}
+          >
+            {bmiUnit === 'imperial' ? (
+              <>
+                <div
+                  className="bmi-hw-field"
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <span style={{ fontSize: 14, color: '#4a3f2f', fontWeight: 500 }}>Height:</span>
+                  <input
+                    type="number"
+                    min={4}
+                    max={7}
+                    className="bmi-num-input"
+                    style={{ ...BMI_INPUT_BASE, width: 56 }}
+                    value={impFt}
+                    onChange={(e) => {
+                      const v = Number.parseInt(e.target.value, 10);
+                      setImpFt(clampInt(Number.isNaN(v) ? 4 : v, 4, 7));
+                    }}
+                  />
+                  <span style={{ fontSize: 12, color: '#6b5e4e' }}>ft</span>
+                  <input
+                    type="number"
+                    min={0}
+                    max={11}
+                    className="bmi-num-input"
+                    style={{ ...BMI_INPUT_BASE, width: 56 }}
+                    value={impIn}
+                    onChange={(e) => {
+                      const v = Number.parseInt(e.target.value, 10);
+                      setImpIn(clampInt(Number.isNaN(v) ? 0 : v, 0, 11));
+                    }}
+                  />
+                  <span style={{ fontSize: 12, color: '#6b5e4e' }}>in</span>
+                </div>
+                <div
+                  className="bmi-hw-field"
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <span style={{ fontSize: 14, color: '#4a3f2f', fontWeight: 500 }}>Weight:</span>
+                  <input
+                    type="number"
+                    min={60}
+                    max={500}
+                    className="bmi-num-input"
+                    style={{ ...BMI_INPUT_BASE, width: 72 }}
+                    value={impLbs}
+                    onChange={(e) => {
+                      const v = Number.parseInt(e.target.value, 10);
+                      setImpLbs(clampInt(Number.isNaN(v) ? 60 : v, 60, 500));
+                    }}
+                  />
+                  <span style={{ fontSize: 12, color: '#6b5e4e' }}>lbs</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  className="bmi-hw-field"
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <span style={{ fontSize: 14, color: '#4a3f2f', fontWeight: 500 }}>Height:</span>
+                  <input
+                    type="number"
+                    min={120}
+                    max={220}
+                    className="bmi-num-input"
+                    style={{ ...BMI_INPUT_BASE, width: 72 }}
+                    value={metCm}
+                    onChange={(e) => {
+                      const v = Number.parseInt(e.target.value, 10);
+                      setMetCm(clampInt(Number.isNaN(v) ? 120 : v, 120, 220));
+                    }}
+                  />
+                  <span style={{ fontSize: 12, color: '#6b5e4e' }}>cm</span>
+                </div>
+                <div
+                  className="bmi-hw-field"
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <span style={{ fontSize: 14, color: '#4a3f2f', fontWeight: 500 }}>Weight:</span>
+                  <input
+                    type="number"
+                    min={30}
+                    max={250}
+                    className="bmi-num-input"
+                    style={{ ...BMI_INPUT_BASE, width: 72 }}
+                    value={metKg}
+                    onChange={(e) => {
+                      const v = Number.parseInt(e.target.value, 10);
+                      setMetKg(clampInt(Number.isNaN(v) ? 30 : v, 30, 250));
+                    }}
+                  />
+                  <span style={{ fontSize: 12, color: '#6b5e4e' }}>kg</span>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div style={{ fontSize: 13, color: '#6b5e4e', marginBottom: 8 }}>
+            Calculated BMI: {modifiers.bmi.toFixed(1)} —{' '}
+            <span style={{ color: bmiCat.color, fontWeight: 600 }}>{bmiCat.label}</span>
+          </div>
+
+          <BmiSlider value={modifiers.bmi} onChange={(v) => patch({ bmi: v })} />
+        </div>
       ),
       resource:
         modifiers.bmi < 18.5
@@ -492,7 +761,26 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
           box-shadow: 0 1px 4px rgba(26, 22, 18, 0.15);
         }
 
+        .bmi-num-input:focus {
+          outline: 2px solid #c9a84c;
+          outline-offset: 2px;
+        }
+        .sliders-row-bmi {
+          align-items: flex-start;
+        }
+        .sliders-row-bmi .sliders-badge-col {
+          align-items: flex-start;
+          padding-top: 4px;
+        }
+
         @media (max-width: 480px) {
+          .bmi-hw-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .bmi-hw-field {
+            width: 100% !important;
+          }
           .sliders-row {
             flex-wrap: wrap;
             gap: 10px;
@@ -563,7 +851,10 @@ export default function Sliders({ baseDeathAge, onModifiersChange }: SlidersProp
             const last = index === rows.length - 1;
             return (
               <div key={row.factor}>
-                <div style={rowBase(index, last)} className="sliders-row">
+                <div
+                  style={rowBase(index, last)}
+                  className={row.factor === 'BMI' ? 'sliders-row sliders-row-bmi' : 'sliders-row'}
+                >
                   <div style={labelCol} className="sliders-label-col">
                     {row.icon}
                     <span style={labelText}>{row.label}</span>
